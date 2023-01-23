@@ -6,6 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -25,16 +26,19 @@ class Sortie
     private $nom;
 
     /**
+     *
      * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
+     * @Assert\Range(min="30",minMessage="durée minimale de 30 min")
      * @ORM\Column(type="integer")
      */
     private $duree;
 
     /**
+     * @Assert\GreaterThanOrEqual(propertyPath="dateHeureDebut")
      * @ORM\Column(type="date")
      */
     private $dateLimiteInscription;
