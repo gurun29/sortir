@@ -8,8 +8,7 @@ use App\Entity\Participant;
 use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker;
-use Faker\Provider\fr_FR\Address;
+
 
 class AppFixtures extends Fixture
 {
@@ -37,10 +36,10 @@ class AppFixtures extends Fixture
             $participant->setMail($faker->unique()->email());
             $participant->setPseudo($faker->name());
             $participant->setAdministrateur(false);
-            //$participant->setTelephone($faker->unique()->phoneNumber());
-            $participant->setTelephone($faker->unique()->numberBetween($int1 = 0600000000,     $int2 = 0700000000));
+            $participant->setTelephone($faker->unique()->phoneNumber());
+            //$participant->setTelephone($faker->unique()->numberBetween($int1 = 0600000000,     $int2 = 0700000000));
             $participant->setRoles(["ROLE_USER"]);
-            $participant->setPassword("123456");
+            //$participant->setPassword("123456");
             $participant->setPassword($faker->password());
             $participant->setActif(true);
             //$participant->setEstRattacheA(new Campus());
@@ -60,10 +59,10 @@ class AppFixtures extends Fixture
 
         // créations des villes
         $ville = [];
-        for ($j=1;$j<=10; $j++) {
+        for ($j=0;$j<=9; $j++) {
             $ville[$j] = new Ville();
             $ville[$j]->setNom($faker->city());
-            $ville[$j]->setCodePostal($faker->numberBetween($int1 = 00000,     $int2 = 99999));
+            $ville[$j]->setCodePostal($faker->postcode());
             $manager->persist($ville[$j]);
         }
 
