@@ -77,7 +77,7 @@ class Sortie
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $SiteOrganisateur;
+    private $siteOrganisateur;
 
     /**
      * @ORM\ManyToMany(targetEntity=Participant::class, inversedBy="sortiesInscrit")
@@ -208,12 +208,12 @@ class Sortie
 
     public function getSiteOrganisateur(): ?Campus
     {
-        return $this->SiteOrganisateur;
+        return $this->siteOrganisateur;
     }
 
-    public function setSiteOrganisateur(?Campus $SiteOrganisateur): self
+    public function setSiteOrganisateur(?Campus $siteOrganisateur): self
     {
-        $this->SiteOrganisateur = $SiteOrganisateur;
+        $this->siteOrganisateur = $siteOrganisateur;
 
         return $this;
     }

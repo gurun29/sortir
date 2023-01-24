@@ -13,7 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"mail","pseudo"}, message="There is already an account with this email or pseudo")
+ * @UniqueEntity(fields={"mail"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"pseudo"}, message="There is already an account with this pseudo")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -39,7 +40,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      * @Assert\Length(min = 10, max = 12, minMessage = "min_lenght", maxMessage = "max_lenght")
      * @Assert\Regex(pattern="/^[0-9]*$/", message="number_only")
      */

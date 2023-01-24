@@ -25,7 +25,7 @@ class Ville
     private $nom;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $codePostal;
 
