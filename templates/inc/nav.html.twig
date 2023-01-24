@@ -1,7 +1,7 @@
 <nav>
     <ul>
         <li><a href="{{ path('main') }}" title="Accueil">Accueil</a></li>
-{#        <li><a href="{{ path('mon_profil') }}" title="MonProfil">Mon Profil</a></li>#}
+{#        <li><a href="{{ path('mon_profil/') . app.user.id }}" title="MonProfil">Mon Profil</a></li>#}
 
 
         {% if app.user %}

@@ -1,0 +1,47 @@
+body {
+    background: linear-gradient(#000000, #132135);
+    background-attachment: fixed;
+    color: #EEE;
+    font-family: 'Crimson Text', serif;
+}
+
+
+body > .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+label {
+    display: inline-block;
+    max-width: 60%;
+    width: 300px;
+}
+
+input, textarea, select  {
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    max-width: 30%;
+    width: 220px;
+}
+
+.flash {
+    padding: 20px;
+    font-size: 1.4rem;
+    font-weight: bolder;
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+
+
+.flash-sucess {
+    background-color: lawngreen;
+}
+
+.flash-alert {
+    background-color: red;
+}

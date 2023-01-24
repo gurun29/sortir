@@ -23,8 +23,9 @@ class ParticipantType extends AbstractType
                     'label' => 'Nom',
                     'placeholder' => "votre nom svp",
                 ])*/
-            ->add('nom')
+            ->add('pseudo')
             ->add('prenom')
+            ->add('nom')
             ->add('telephone')
             ->add('mail')
             //->add('password')
@@ -48,10 +49,11 @@ class ParticipantType extends AbstractType
             )*/
             //->add('administrateur')
             //->add('actif')
-            ->add('pseudo')
-            ->add('sortiesInscrit')
+
+            //->add('sortiesInscrit')
             ->add('getEstRattacheA', EntityType::class, [
                 'class'=>Campus::class,
+                'label'=>'Campus',
                 'choice_label'=>'nom',
                 'placeholder'=>'saisir un campus',
                 'query_builder'=>function(CampusRepository $campusRepository)

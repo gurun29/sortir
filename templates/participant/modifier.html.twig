@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MonProfilController!{% endblock %}
+{% block title %}MonProfil{% endblock %}
 
 {% block body %}
 <style>
@@ -9,17 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ parent() }}! ✅</h1>
+    <h1>Hello {{ app.user }}!</h1>
 
     {{ form_start(monProfilForm) }}
     {{ form_widget(monProfilForm) }}
     <button>Modifier mon profil</button>
     {{ form_end(monProfilForm) }}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/sortir/src/Controller/MonProfilController.php'|file_link(0) }}">src/Controller/MonProfilController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/sortir/templates/mon_profil/index.html.twig'|file_link(0) }}">templates/mon_profil/index.html.twig</a></code></li>
-    </ul>
+
 </div>
 {% endblock %}
