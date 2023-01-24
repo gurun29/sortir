@@ -27,14 +27,14 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Length(min={2}, max={50}, minMessage = "min_lenght", maxMessage = "max_lenght")
+     * @Assert\Length(min=2, max=50, minMessage = "min_lenght", maxMessage = "max_lenght")
      *
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Length(min={2}, max={50}, minMessage = "min_lenght", maxMessage = "max_lenght")
+     * @Assert\Length(min=2, max=50, minMessage = "min_lenght", maxMessage = "max_lenght")
      *
      */
     private $prenom;
@@ -261,7 +261,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->mail;
     }
 
     /**
@@ -269,7 +269,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->mail;
     }
 
     /**

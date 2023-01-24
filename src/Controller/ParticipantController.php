@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Form\ParticipantType;
 use App\Entity\Participant;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,11 +14,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/mon_profil", name="mon_profil")
+     * @Route("/mon_profil/{id}", name="mon_profil")
      */
-    public function modifier(Request $request, EntityManagerInterface $entityManager): Response
+    public function modifier(Request $request, EntityManagerInterface $entityManager, ParticipantRepository $participantRepository, int $id): Response
     {
-        $monProfil = new Participant();
+        //$monProfil = new Participant();
+        $monProfil = $participantRepository->find($id);
+        if (!$monProfil){
+            throw $this->createNotFoundException("oh no, the serie don't exist");
+        }
+
         $monProfilForm = $this->createForm(ParticipantType::class,$monProfil);
         //$monProfilForm = $this->createForm(Participant::class,$monProfil);
         //dump($monProfilForm);
@@ -28,10 +34,12 @@ class ParticipantController extends AbstractController
 
         if ($monProfilForm->isSubmitted() && $monProfilForm->isValid())
         {
+            //dd($monProfil);
             $entityManager->persist($monProfil);
+            //dd($monProfil);
             $entityManager->flush();
             $this->addFlash('sucess','profil modifié');
-            return $this->redirectToRoute('main');
+            //return $this->redirectToRoute('main');
         }
 
           return $this->render('participant/modifier.html.twig', [

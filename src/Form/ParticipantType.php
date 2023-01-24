@@ -19,22 +19,22 @@ class ParticipantType extends AbstractType
             ->add('prenom')
             ->add('telephone')
             ->add('mail')
-            /*->add('motPasse')
+            //->add('motPasse')
             ->add('administrateur')
             ->add('actif')
             ->add('pseudo')
-            ->add('estRattacheA')
-            ->add('sortiesInscrit')*/
-            ->add('campus', EntityType::class, [
+            ->add('sortiesInscrit')
+            ->add('getEstRattacheA', EntityType::class, [
                 'class'=>Campus::class,
                 'choice_label'=>'nom',
                 'placeholder'=>'saisir un campus',
                 'query_builder'=>function(CampusRepository $campusRepository)
                 {
-                    return $campusRepository->createQueryBuilder('name')->orderBy('nom','ASC');
+                    return $campusRepository->createQueryBuilder('nom');
                     //return $campusRepository->createQueryBuilder('name')->orderBy('nom','ASC');
                 }
             ])
+            //->add('estRattacheA')
         ;
     }
 
