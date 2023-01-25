@@ -1,0 +1,17 @@
+
+
+
+<header>
+    <h1><a href="{{ path('main') }}"></a><img src="{{ asset('img/logo-eni.png') }}" alt="Series!"> </h1>
+</header>
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+    <h1>Reset your password</h1>
+
+    {{ form_start(resetForm) }}
+        {{ form_row(resetForm.plainPassword) }}
+        <button class="btn btn-primary">Reset password</button>
+    {{ form_end(resetForm) }}
+{% endblock %}

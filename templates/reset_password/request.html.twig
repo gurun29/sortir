@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+<header>
+    <h1><a href="{{ path('main') }}"></a><img src="{{ asset('img/logo-eni.png') }}" alt="Series!"> </h1>
+</header>
+
+<div class="h46">
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <h1 class="titremotdepasereset">Réinitialisez <br>votre mot de passe</h1>
+
+    {{ form_start(requestForm) }}
+        {{ form_row(requestForm.mail) }}
+        <div>
+            <small>
+                Entrez votre adresse e-mail et nous vous enverrons <br>  un lien pour réinitialiser votre mot de passe.
+            </small>
+        </div>
+
+        <button class="btn btn-primary">Réinitialisation du mot de passe</button>
+    {{ form_end(requestForm) }}
+{% endblock %}
+</div>

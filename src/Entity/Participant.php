@@ -47,6 +47,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $telephone;
 
     /**
+     * @ORM\Column(type="json")
+     *
+     */
+    private $roles = [];
+
+
+    /**
      * @ORM\Column(type="string", length=80, unique=true)
      *
      */
