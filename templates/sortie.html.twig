@@ -1,14 +1,34 @@
-{% extends 'base.html.twig' %}
+{% extends '/base.html.twig' %}
 {% block body %}
     <h1>bonjour</h1>
-    <ul>
+    <table>
+    <caption><h2>Liste des sortie</h2> </caption><br>
+    <tr>
+        <th>Nom de la sortie</th>
+        <th>Date  de la sortie</th>
+        <th>Cloture</th>
+        <th>Inscrit/Places</th>
+        <th>Etat</th>
+
+        <th>Organisateur</th>
+        <th>action</th>
+    </tr>
     {% for li in list %}
-        <li><h4>{{ li.nom }}</h4><br>
-            <div>-{{ li.lieu.nom }}</div><br>
-            <p>-{{ li.infosSortie }}</p><br>
-            <div> {{ li.dateHeureDebut|date('d/m/y h:m') }}</div></li>
+        <tr> <td>{{ li.nom }}</td>
+             <td>{{ li.dateHeureDebut|date('d/m/y h:m') }}</td>
+            <td>{{ li.dateLimiteInscription|date('d/m/y h:m') }}</td>
+            <td>{{ li.nbInscriptionsMax }}</td>
+            <td>{{ li.etat.libelle }}</td>
+            <td>{{ li.organisateur.nom }}</td>
+            <td><a href="{{ path('sortie_detail', {id: li.id}) }}">afficher</a></td>
+
+            </tr>
+
+
+
+
     {% endfor %}
-    </ul>
+    </table>
 {% endblock %}
 
 {% block title %}

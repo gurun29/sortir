@@ -65,3 +65,15 @@ input, textarea, select  {
 .flash-alert {
     background-color: red;
 }
+table
+{
+    height: auto;
+    width: auto;
+    border-collapse: collapse;
+
+
+}
+th, td
+{
+    border: 1px solid white;
+}
