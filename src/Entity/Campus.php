@@ -25,7 +25,7 @@ class Campus
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="SiteOrganisateur")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="siteOrganisateur")
      */
     private $sorties;
 

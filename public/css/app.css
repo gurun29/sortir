@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(#000000, #132135);
+    background: linear-gradient(#011f39, #132135);
     background-attachment: fixed;
     color: #EEE;
     font-family: 'Crimson Text', serif;
@@ -9,11 +9,11 @@ body {
 body > .container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 95vh;
 }
 
 main {
-    flex: 1;
+    flex-grow:1;
 }
 
 label {
