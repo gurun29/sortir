@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>bonjour</h1>
+    <ul>
+    {% for li in list %}
+        <li><h4>{{ li.nom }}</h4><br>
+            <div>-{{ li.lieu.nom }}</div><br>
+            <p>-{{ li.infosSortie }}</p><br>
+            <div> {{ li.dateHeureDebut|date('d/m/y h:m') }}</div></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block title %}
+Sortie
+{% endblock %}
+

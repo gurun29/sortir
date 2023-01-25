@@ -3,8 +3,10 @@
 namespace App\DataFixtures;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
+use App\Entity\Sortie;
 use App\Entity\Ville;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -12,6 +14,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
+
+
     public function load(ObjectManager $manager): void
     {
         // $product = new Product();
@@ -29,31 +33,32 @@ class AppFixtures extends Fixture
         }
 
         // créations des participants
-        for ($k=1;$k<=8; $k++){
-            $participant = new Participant();
-            $participant->setNom($faker->unique()->lastName());
-            $participant->setPrenom($faker->unique()->firstName());
-            $participant->setMail($faker->unique()->email());
-            $participant->setPseudo($faker->name());
-            $participant->setAdministrateur(false);
-            $participant->setTelephone($faker->unique()->phoneNumber());
+        $participant=[];
+        for ($k=0;$k<=8; $k++){
+            $participant[$k] = new Participant();
+            $participant[$k]->setNom($faker->unique()->lastName());
+            $participant[$k]->setPrenom($faker->unique()->firstName());
+            $participant[$k]->setMail($faker->unique()->email());
+            $participant[$k]->setPseudo($faker->name());
+            $participant[$k]->setAdministrateur(false);
+            $participant[$k]->setTelephone($faker->unique()->phoneNumber());
             //$participant->setTelephone($faker->unique()->numberBetween($int1 = 0600000000,     $int2 = 0700000000));
-            $participant->setRoles(["ROLE_USER"]);
+            $participant[$k]->setRoles(["ROLE_USER"]);
             //$participant->setPassword("123456");
-            $participant->setPassword($faker->password());
-            $participant->setActif(true);
+            $participant[$k]->setPassword($faker->password());
+            $participant[$k]->setActif(true);
             //$participant->setEstRattacheA(new Campus());
 
             // on récupère un nombre aléatoire de campus dans un tableau
             $randomCampus = (array) array_rand($campus, rand(1, count($campus)));
             // puis on les ajoute au Customer
             foreach ($randomCampus as $key => $value) {
-                $participant->setEstRattacheA($campus[$key]);
+                $participant[$k]->setEstRattacheA($campus[$key]);
             }
 
             //$participant->setCategory($category);
             //$participant->setPrenom(new \DateTime());
-            $manager->persist($participant);
+            $manager->persist($participant[$k]);
 
         }
 
@@ -67,17 +72,18 @@ class AppFixtures extends Fixture
         }
 
         // créations des lieux
-        for ($x=1;$x<=5; $x++) {
-            $lieu = new Lieu();
-            $lieu->setNom($faker->city());
-            $lieu->setRue($faker->streetAddress());
-            $lieu->setLatitude($faker->randomFloat(1, -90, 90));
+            $lieu=[];
+        for ($x=0;$x<=5; $x++) {
+            $lieu [$x]= new Lieu();
+            $lieu[$x]->setNom($faker->city());
+            $lieu  [$x]->setRue($faker->streetAddress());
+            $lieu [$x]->setLatitude($faker->randomFloat(1, -90, 90));
 
             // on récupère un nombre aléatoire de campus dans un tableau
             //$randomVille = (array) array_rand($ville, rand(1, count($ville)));
             // puis on les ajoute au Customer
             //foreach ($randomVille as $key2 => $value) {
-                $lieu->setVille($ville[$faker->randomDigit()]);
+                $lieu[$x]->setVille($ville[$faker->randomDigit()]);
             //}
             //$test =
             //$randomVille = (array) array_rand($ville, rand(1, count($ville)));
@@ -86,8 +92,54 @@ class AppFixtures extends Fixture
             //    $lieu->setVille($ville[$key]);
             //}
 
-            $manager->persist($lieu);
+
+            $manager->persist($lieu[$x]);
+
         }
+        //cration des etats
+            $etat=[];
+        for ($l=0;$l<=2;$l++){
+            $etat [$l] =new Etat();
+            $etat [$l] ->setLibelle($faker->title());
+            $manager->persist($etat[$l]);
+        }
+
+
+        //creation de sorties
+        for ($a=1;$a<=5;$a++){
+            $sortie=new Sortie();
+            $sortie->setNom($faker->unique()->title());
+            $sortie->setDuree($faker->randomDigit());
+            $sortie->setInfosSortie($faker->text());
+
+          $randomLieu = (array) array_rand($lieu, rand(1, count($lieu)));
+
+           foreach ($randomLieu as $key => $value) {
+              $sortie->setLieu($lieu[$key]);
+           }
+
+                $randomEtat= (array) array_rand($etat,rand(1,count($etat)));
+           foreach ($randomEtat as $key => $value) {
+               $sortie->setEtat($etat[$key]);
+           }
+            $sortie->setNbInscriptionsMax($faker->randomDigit());
+            $sortie->setDateHeureDebut($faker->dateTime('now +8 month'));
+            $sortie->setDateLimiteInscription($faker->dateTime('now +6 month'));
+
+            $randomOrganisateur = (array) array_rand($participant,rand(1,count($participant)));
+            foreach ($randomOrganisateur as $key => $value){
+                $sortie->setOrganisateur($participant[$key]);
+            }
+
+
+           $radomSiteOrganisateur=(array) array_rand($campus,rand(1,count($campus)));
+           foreach ($radomSiteOrganisateur as $key => $value){
+               $sortie->setSiteOrganisateur($campus[$key]);
+           }
+           $manager->persist($sortie);
+
+        }
+
 
         $manager->flush();
     }
