@@ -16,10 +16,27 @@ main {
     flex-grow:1;
 }
 
+.tableau {
+    display: inline-block;
+    align-content: center;
+
+}
+
 label {
     display: inline-block;
     max-width: 60%;
     width: 300px;
+}
+
+.col1 {
+    display: inline-block;
+    max-width: 60%;
+    width: 200px;
+}
+.col2 {
+    display: inline-block;
+    max-width: 60%;
+    width: 400px;
 }
 
 input, textarea, select  {
@@ -28,6 +45,8 @@ input, textarea, select  {
     max-width: 30%;
     width: 220px;
 }
+
+
 
 .flash {
     padding: 20px;

@@ -87,4 +87,29 @@ class ParticipantController extends AbstractController
         //    'controller_name' => 'MonProfilController',
         //]);
     }
+
+
+    /**
+     * @Route("/profil/{id}", name="profil")
+     */
+    public function afficher(
+        ParticipantRepository $participantRepository,
+        int $id
+    ): Response
+    {
+
+
+        $profil = $participantRepository->find($id);
+        if (!$profil){
+            throw $this->createNotFoundException("Le participant n'existe pas ?!");
+        }
+
+        return $this->render('participant/afficher.html.twig', [
+            'participant'=>$profil
+        ]);
+
+    }
+
+
+
 }
