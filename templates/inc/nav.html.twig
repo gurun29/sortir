@@ -1,20 +1,18 @@
 <nav>
     <ul>
         <li><a href="{{ path('main') }}" title="Accueil">Accueil</a></li>
-{#        <li><a href="{{ path('mon_profil/') . app.user.id }}" title="MonProfil">Mon Profil</a></li>#}
-
 
         {% if app.user %}
             {% if is_granted("ROLE_ADMIN") %}
     {#            <li><a href="{{ path('admin_villes') }}" title="Admin villes">Villes</a></li>#}
     {#            <li><a href="{{ path('admin_campus') }}" title="Admin campus">Campus</a></li>#}
             {% endif %}
-
+            <li><a href="{{ path('monprofil') }}" title="MonProfil">Mon Profil</a></li>
 {#            <li><a href="{{ path('mon_profil') }}" title="MonProfil">Mon Profil</a></li>#}
     {#        <li><a href="{{ path('deconnecter') }}" title="SeDeconnecter">Se déconnecter</a></li>#}
-
+            <li><a href="{{ path('app_logout') }}" title="Login">Login</a></li>
         {% else %}
-            <li><a href="{{ path('app_login') }}" title="Login">Login</a></li>
+            <li><a href="{{ path('app_login') }}" title="Logout">Logout</a></li>
         {% endif %}
 
 

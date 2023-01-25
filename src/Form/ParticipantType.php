@@ -9,6 +9,8 @@ use Doctrine\DBAL\Types\TextType;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -26,19 +28,31 @@ class ParticipantType extends AbstractType
             ->add('pseudo')
             ->add('prenom')
             ->add('nom')
-            ->add('telephone')
-            ->add('mail')
+            ->add('telephone',null,
+                [
+                    'label' => 'N° de de téléphone',
+                ]
+            )
+            ->add('mail', EmailType::class,
+                [
+                    //'method'=> 'email',
+                    'label' => 'N° de de téléphone',
+                ]
+            )
             //->add('password')
-            ->add('mdp',null,
+            //->add('mdp',PasswordType::class,
+            ->add('mdp',PasswordType::class,
                 [
                     'label' => 'Mot de passe',
                     'mapped' => false,
+                    'required'=> false,
                 ]
             )
-            ->add('mdp2',null,
+            ->add('mdp2',PasswordType::class,
                 [
                     'label' => 'Confirmez le mot de passe',
                     'mapped' => false,
+                    'required'=> false,
                 ]
             )
             /*->add('mdp', Participant::class,

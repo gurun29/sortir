@@ -9,12 +9,24 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ app.user }}! Mon profil</h1>
+    <h1>Hello {{ parent() }}! Mon profil</h1>
 
     {{ form_start(monProfilForm) }}
-    {{ form_widget(monProfilForm) }}
+{#    {{ form_widget(monProfilForm) }}#}
+    {{ form_row(monProfilForm.pseudo) }}
+    {{ form_row(monProfilForm.prenom) }}
+    {{ form_row(monProfilForm.nom) }}
+    {{ form_row(monProfilForm.telephone) }}
+    {{ form_row(monProfilForm.mail) }}
+    {{ form_row(monProfilForm.mdp) }}
+    {{ form_row(monProfilForm.mdp2) }}
+    {{ form_row(monProfilForm.getEstRattacheA) }}
+
+
     <button>Modifier mon profil</button>
     {{ form_end(monProfilForm) }}
+
+
 
 
 </div>

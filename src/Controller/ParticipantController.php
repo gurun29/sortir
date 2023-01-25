@@ -11,10 +11,35 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
+//use Symfony\Component\Security\Http\Authentication\AuthenticatorManagerInterface;
+//use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+//use App\Security\AccessTokenHandler;
+//use Symfony\Config\SecurityConfig;
+use Symfony\Component\Security\Core\Security;
 
 class ParticipantController extends AbstractController
 {
+//    /**
+//     * @var Security
+//     */
+    private $security;
+
+
+    /**
+     * @Route("/mon_profil", name="monprofil")
+     */
+    public function monProfil(Security $security) {
+        $monProfil = $this->getUser();
+        //$user = $this->get('security.token_storage')->getToken()->getUser();
+        //$user->getUsername();
+        //$monProfil = $this->container->get('security.context_listener')->getToken()->getUser()->getCandidat();
+        //$monProfil =
+        //dd($monProfil);
+        //$monProfil =
+        return $this->redirectToRoute('mon_profil',[
+            'id'=>$monProfil->getId(),
+        ]);
+    }
     /**
      * @Route("/mon_profil/{id}", name="mon_profil")
      */
@@ -27,12 +52,21 @@ class ParticipantController extends AbstractController
         int $id
     ): Response
     {
-        $MDP = "****";
+        //$MDP = "****";
+        $MDP = "";
         $mdphash="";
 
+
+
         $monProfil = $participantRepository->find($id);
+        $monProfilCopy = clone $monProfil;
         if (!$monProfil){
-            throw $this->createNotFoundException("oh no, the serie don't exist");
+            throw $this->createNotFoundException("le participant n'existe pas");
+        }
+
+        $testProfil = $this->getUser()->getId();
+        if ($testProfil <> $id){
+            throw $this->createNotFoundException("route interdite");
         }
 
         $monProfilForm = $this->createForm(ParticipantType::class,$monProfil);
@@ -50,7 +84,8 @@ class ParticipantController extends AbstractController
         }
 
         if ($monProfilForm->isSubmitted() && $monProfilForm->isValid()
-             && $monProfilForm->get('mdp')->getData() === $monProfilForm->get('mdp2')->getData())
+             && $monProfilForm->get('mdp')->getData() === $monProfilForm->get('mdp2')->getData()
+                && ($monProfil <> $monProfilCopy || $monProfilForm->get('mdp')->getData()<>"") )
         {
             //dump($monProfil);
             if ($monProfilForm->get('mdp')->getData() <> $MDP) {
@@ -64,7 +99,9 @@ class ParticipantController extends AbstractController
                 );
             }
 
-            //dd($monProfil);
+            //dump($monProfil);
+            //dd($monProfilCopy);
+
             $entityManager->persist($monProfil);
 
             $entityManager->flush();
