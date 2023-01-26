@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 <header>
-    <h1><a href="{{ path('main') }}"></a><img src="{{ asset('img/logo-eni.png') }}" alt="Series!"> </h1>
+    <h1 class="h47"><a href="{{ path('main') }}"></a><img src="{{ asset('img/logo-eni.png') }}" alt="Series!"> </h1>
 </header>
 {% block body %}
 <form class="h45" method="post">
@@ -17,13 +17,17 @@
 
     <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
     <label for="inputEmail">Identifiant</label>
-    <input type="email" value="{{ last_username }}" name="mail" id="inputEmail" class="form-control" autocomplete="mail" required autofocus>
+    <input class="input100" type="email" value="{{ last_username }}" name="mail" id="inputEmail" class="form-control" autocomplete="mail" required autofocus>
     <label for="inputPassword">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-    <input type="checkbox" name="_remember_me" id="_remember_me"> <label for="_remember_me">Se souvenir de moi</label>
+    <input class="input100" type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    <input  type="checkbox" name="_remember_me" id="_remember_me"> <label class="input100" for="_remember_me">Se souvenir de moi</label>
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
+
+    <button class="button2" type="submit">
+        S'identifier
+    </button>
     <div class="mb-4">
         <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié</a>
     </div>
@@ -38,8 +42,6 @@
         </div>
     #}
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        S'identifier
-    </button>
+
 </form>
 {% endblock %}

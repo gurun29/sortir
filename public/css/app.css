@@ -2,7 +2,7 @@ body {
     background: linear-gradient(#011f39, #132135);
     background-attachment: fixed;
     color: #EEE;
-    font-family: 'Crimson Text', serif;
+    font-family: "Roboto Light";
 }
 
 
@@ -22,12 +22,7 @@ main {
 
 }
 
-label {
-    display: inline-block;
-    max-width: 60%;
-    width: 300px;
-    margin: 2px;
-}
+
 
 .col1 {
     display: inline-block;
@@ -43,8 +38,9 @@ label {
 input, textarea, select  {
     margin-bottom: 1rem;
     box-sizing: border-box;
-    max-width: 30%;
+    max-width: 60%;
     width: 220px;
+
 }
 
 
@@ -64,6 +60,102 @@ input, textarea, select  {
 
 .flash-alert {
     background-color: red;
+}
+
+.h45 {
+    width: 400px;margin: auto; margin-top: 70px;
+
+}
+.h46 {
+    width: 400px;margin: auto;margin-top: 70px;
+
+}
+
+.h47 {
+    margin-left: 170px;
+
+}
+
+nav{
+    position: absolute;
+    top: 60px; left: 1140px;
+}
+ul{
+ display: inline-block;list-style-type: none;display: inline-flex;
+
+
+}
+
+a{
+
+    text-decoration: none;
+    color: white;
+    display: block;padding: 10px;text-decoration: underline;font-family: Roboto;}
+
+ a:hover {
+     color: palegreen;text-decoration: none;
+}
+
+.input100 {
+
+    height: 25px;
+    margin-bottom: 20px;
+   }
+
+.mb-4 {
+    text-align: center;
+
+}
+
+[type="checkbox"], [type="radio"] {
+    box-sizing: border-box;
+    padding: 0;position: absolute; top: 373px; left: 608px;
+}
+
+button,
+button::after {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+button {
+    margin-top: 15px;
+
+    background: none;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    color: #fff;
+
+    padding: 0.5em 1.5em;
+    position: relative;
+    text-transform: uppercase;
+}
+button::before,
+button::after {
+    background: #fff;
+    content: "";
+    position: absolute;
+    z-index: -1;
+}
+button:hover {
+    color: black;
+}
+
+.button2::after {
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 0;
+}
+.button2:hover:after {
+    width: 100%;
+}
+
+small {
+    margin-left: 120px;
+    font-size: 60%;
+    position: absolute; top: 350px; left: 622px;
 }
 table
 {

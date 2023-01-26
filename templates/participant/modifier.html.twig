@@ -3,12 +3,12 @@
 {% block title %}MonProfil{% endblock %}
 
 {% block body %}
-<style>
+{#  <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+</style>#}
 
-<div class="example-wrapper">
+<div class="h46">
     <h1>Hello {{ parent() }}! Mon profil</h1>
 
     {{ form_start(monProfilForm) }}
@@ -23,7 +23,7 @@
     {{ form_row(monProfilForm.getEstRattacheA) }}
 
 
-    <button>Modifier mon profil</button>
+    <button  class="button2">Modifier mon profil</button>
     {{ form_end(monProfilForm) }}
 
 

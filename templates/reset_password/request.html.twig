@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
 <header>
-    <h1><a href="{{ path('main') }}"></a><img src="{{ asset('img/logo-eni.png') }}" alt="Series!"> </h1>
+    <h1 class="h47"><a href="{{ path('main') }}"></a><img src="{{ asset('img/logo-eni.png') }}" alt="Series!"> </h1>
 </header>
 
 <div class="h46">
@@ -13,13 +13,13 @@
 
     {{ form_start(requestForm) }}
         {{ form_row(requestForm.mail) }}
-        <div>
+        <div class="input100">
             <small>
-                Entrez votre adresse e-mail et nous vous enverrons <br>  un lien pour réinitialiser votre mot de passe.
+                Entrez votre adresse e-mail.
             </small>
         </div>
 
-        <button class="btn btn-primary">Réinitialisation du mot de passe</button>
+        <button class="button2">Réinitialisation du mot de passe</button>
     {{ form_end(requestForm) }}
 {% endblock %}
 </div>
