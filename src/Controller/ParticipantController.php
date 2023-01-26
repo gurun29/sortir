@@ -166,7 +166,7 @@ class ParticipantController extends AbstractController
         $profil = $participantRepository->find($idProfil);
 
         if (!$profil){
-            return $this->render('sortie.html.twig');
+            return $this->redirectToRoute('main');
         }
 
         $sortie = $sortieRepository->find($id);
@@ -182,7 +182,9 @@ class ParticipantController extends AbstractController
         dump($sortie->getDateHeureDebut() );
         dump($sortie->getDateLimiteInscription() );
 
-        if ($sortie->getDateHeureDebut() < $testDate && $sortie->getDateLimiteInscription() > $testDate ){
+        if ($sortie->getDateHeureDebut() < $testDate
+            && $sortie->getDateLimiteInscription() > $testDate
+            && $sortie->getNbInscriptionsMax() > $sortie->getInscrit()->count() ){
             //dump($sortie);
             $sortie->addInscrit($profil);
             //$profil->addSortiesInscrit($id);
@@ -190,16 +192,30 @@ class ParticipantController extends AbstractController
             $entityManager->persist($sortie);
 
             $entityManager->flush();
-            $this->addFlash('sucess','profil modifié');
+            $this->addFlash('sucess','Bravo, vous êtes inscrit à cette sortie');
 
             return $this->redirectToRoute('sortie_detail',[
                 "id" => $id,
             ]);
 
         }
+
         else {
-            throw $this->createNotFoundException("L'inscription n'est pas ouverte ou terminée");
+
+                if ($sortie->getNbInscriptionsMax() === $sortie->getInscrit()->count()) {
+                    throw $this->createNotFoundException("Le nombre max de particpant est déja atteint");
+                }
+                if ($sortie->getDateHeureDebut() > $testDate) {
+                    //$this->addFlash('alert',"L'inscription n'est pas ouverte");
+                    //return $this->render('sortie.html.twig');
+                    throw $this->createNotFoundException("L'inscription n'est pas ouverte");
+                }
+                if ($sortie->getDateLimiteInscription() < $testDate) {
+                    throw $this->createNotFoundException("L'inscription est terminée");
+                }
+            throw $this->createNotFoundException("L'inscription n'est pas validé");
         }
+
 
     }
 
