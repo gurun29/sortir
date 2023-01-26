@@ -123,8 +123,10 @@ class AppFixtures extends Fixture
                $sortie->setEtat($etat[$key]);
            }
             $sortie->setNbInscriptionsMax($faker->randomDigit());
-            $sortie->setDateHeureDebut($faker->dateTime('now +8 month'));
-            $sortie->setDateLimiteInscription($faker->dateTime('now +6 month'));
+            $fakersetDateHeureDebut = $faker->dateTimeBetween('-1 month','+1 month');
+            $sortie->setDateHeureDebut($fakersetDateHeureDebut);
+            $sortie->setDateLimiteInscription($faker->dateTimeBetween($fakersetDateHeureDebut,'+1 month'));
+            //$sortie->setDateLimiteInscription($faker->dateTime('now +6 month'));
 
             $randomOrganisateur = (array) array_rand($participant,rand(1,count($participant)));
             foreach ($randomOrganisateur as $key => $value){

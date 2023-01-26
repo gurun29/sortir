@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Form\ParticipantType;
 use App\Entity\Participant;
+use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,8 +137,6 @@ class ParticipantController extends AbstractController
         int $id
     ): Response
     {
-
-
         $profil = $participantRepository->find($id);
         if (!$profil){
             throw $this->createNotFoundException("Le participant n'existe pas ?!");
@@ -144,6 +145,61 @@ class ParticipantController extends AbstractController
         return $this->render('participant/afficher.html.twig', [
             'participant'=>$profil
         ]);
+
+    }
+
+
+
+
+    /**
+     * @Route("/profil/sinscrire/{id}", name="sinscrire")
+     */
+    public function sinscrire (
+        EntityManagerInterface $entityManager,
+        ParticipantRepository $participantRepository,
+        SortieRepository $sortieRepository,
+        int $id
+    ): Response
+    {
+        //dump($id);
+        $idProfil = $this->getUser()->getId();
+        $profil = $participantRepository->find($idProfil);
+
+        if (!$profil){
+            return $this->render('sortie.html.twig');
+        }
+
+        $sortie = $sortieRepository->find($id);
+
+        $et = $sortie->getEtat($id);
+
+        if ($et->getLibelle()=== "Annulée"){
+            throw $this->createNotFoundException("La sortie est annulée");
+        }
+
+        $testDate = new \DateTime();
+
+        dump($sortie->getDateHeureDebut() );
+        dump($sortie->getDateLimiteInscription() );
+
+        if ($sortie->getDateHeureDebut() < $testDate && $sortie->getDateLimiteInscription() > $testDate ){
+            //dump($sortie);
+            $sortie->addInscrit($profil);
+            //$profil->addSortiesInscrit($id);
+            //dd($sortie);
+            $entityManager->persist($sortie);
+
+            $entityManager->flush();
+            $this->addFlash('sucess','profil modifié');
+
+            return $this->redirectToRoute('sortie_detail',[
+                "id" => $id,
+            ]);
+
+        }
+        else {
+            throw $this->createNotFoundException("L'inscription n'est pas ouverte ou terminée");
+        }
 
     }
 
