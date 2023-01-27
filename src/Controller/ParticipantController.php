@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Campus;
 use App\Form\ParticipantType;
 use App\Entity\Participant;
+use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 //use App\Security\AccessTokenHandler;
 //use Symfony\Config\SecurityConfig;
 use Symfony\Component\Security\Core\Security;
+//use App\Command\majEtatCommand;
 
 class ParticipantController extends AbstractController
 {
@@ -26,7 +28,6 @@ class ParticipantController extends AbstractController
 //     * @var Security
 //     */
     private $security;
-
 
     /**
      * @Route("/mon_profil", name="monprofil")
@@ -134,9 +135,12 @@ class ParticipantController extends AbstractController
      */
     public function afficher(
         ParticipantRepository $participantRepository,
+        //CampusRepository $campusRepository,
+        //EntityManagerInterface $entityManager,
         int $id
     ): Response
     {
+        //$this->testtt($participantRepository,$campusRepository, $entityManager);
         $profil = $participantRepository->find($id);
         if (!$profil){
             throw $this->createNotFoundException("Le participant n'existe pas ?!");
@@ -218,7 +222,29 @@ class ParticipantController extends AbstractController
 
 
     }
-
-
+//
+//    public function testtt(ParticipantRepository $participantRepository, CampusRepository $campusRepository, EntityManagerInterface $entityManager)
+//    {
+//        //$this->afficher(50);
+//        //$this->
+//
+//        //$participantRepository = new ParticipantRepository();
+//        $Participants= $participantRepository->findByExampleField(64);
+//        $campus = $campusRepository->find(46);
+//        foreach ($Participants as $Participant) {
+//            $Participant->setActif(false);
+//            //$campus
+//            $Participant->setEstRattacheA($campus);
+//            $entityManager->persist($Participant);
+//
+//            $entityManager->flush();
+//        }
+//        dd($Participants);
+//
+//        //$Participant= $participantRepository->findByChangeDateEtat();
+//        //$sortie = $sortieRepository->find($id);
+//
+//
+//    }
 
 }

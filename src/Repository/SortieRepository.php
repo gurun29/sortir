@@ -80,4 +80,20 @@ class SortieRepository extends ServiceEntityRepository
 
       return $query->getQuery()->getResult();
     }
+
+    /**
+     * @return Sortie[] Returns an array of Participant objects
+     */
+    public function findSortiesDateCloturee($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.dateLimiteInscription < :val')
+            ->setParameter('val', $value)
+            //->orderBy('p.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

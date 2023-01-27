@@ -45,10 +45,10 @@ class ParticipantRepository extends ServiceEntityRepository
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
+//            ->andWhere('p.id < :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
+//            //->orderBy('p.id', 'ASC')
+//            //->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
