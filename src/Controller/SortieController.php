@@ -6,6 +6,8 @@ use App\Entity\Campus;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 
+use App\filtres\Filtres;
+use App\Form\FiltreType;
 use App\Repository\CampusRepository;
 use App\Repository\SortieRepository;
 
@@ -25,16 +27,27 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie", name="app_sortie")
      */
-    public function index(SortieRepository $sortieRepository, EntityManagerInterface $em): Response
+    public function index(SortieRepository $sortieRepository, EntityManagerInterface $em,Request $request): Response
     {
+        $data=new Filtres();
+        $form=$this->createForm(FiltreType::class, $data);
+        $form->handleRequest($request);
+        $sortie=$sortieRepository->findSearch($data);
+
         $list = new Sortie();
+if ($form->isSubmitted()){
+    $list=$sortieRepository->findSearch($data);
+dump($list);
+}else {
 
+    $list = $sortieRepository->findAll();
+}
 
-        $list = $sortieRepository->findAll();
-
-        return $this->render('sortie.html.twig', [
-            'list' => $list
+        return $this->render('sortie/sortie.html.twig', [
+            'list' => $list,
+            'form'=>$form->createView()
         ]);
+
 
     }
 
@@ -61,7 +74,7 @@ class SortieController extends AbstractController
         }
 
 
-        return $this->render('detail.html.twig', [
+        return $this->render('sortie/detail.html.twig', [
             "sortie" => $sortie,
             "campus"=>$campus,
             "ville"=>$ville

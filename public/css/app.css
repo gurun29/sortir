@@ -169,3 +169,10 @@ th, td
 {
     border: 1px solid white;
 }
+form{
+    display: block;
+    width: 100%;
+
+
+}
+

@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Campus;
 use App\Entity\Sortie;
+use App\filtres\Filtres;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
+use App\Repository\CampusRepository;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -39,28 +43,41 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param Filtres $search
+     * @return Sortie[]
+     */
+    public function findSearch(Filtres $search):array
+    {
+        $query=$this->createQueryBuilder('s')
+            ->join(Campus::class,'C');
 
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
+
+        if (!empty($search->nomDeSortie)){
+            $query=$query
+                ->andWhere('s.nom LIKE :nomDeSortie')
+                ->setParameter('nomDeSortie', $search->nomDeSortie );
+
+        }
+       if (!empty($search->dateMin)){
+            $query=$query
+                ->andWhere('s.dateHeureDebut >= :dateMin')
+                ->setParameter('dateMin', $search->dateMin );
+        }
+        if (!empty($search->dateMax)){
+            $query=$query
+                ->andWhere('s.dateLimiteInscription <= :dateMax')
+                ->setParameter('dateMax',$search->dateMax );
+        }
+        if (!empty($search->camp)){
+            $query=$query
+                ->andWhere('C.nom Like :camp')
+                ->setParameter('camp',$search->camp );
+        }
+
+
+
+      return $query->getQuery()->getResult();
+    }
 }

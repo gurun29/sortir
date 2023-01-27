@@ -1,6 +1,7 @@
-{% extends '/base.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block body %}
     <h1>bonjour</h1>
+    {% include 'sortie/_filtres.html.twig' with {form:form} only %}
     <table>
     <caption><h2>Liste des sortie</h2> </caption><br>
     <tr>
@@ -14,6 +15,7 @@
         <th>action</th>
     </tr>
     {% for li in list %}
+
         <tr> <td>{{ li.nom }}</td>
              <td>{{ li.dateHeureDebut|date('d/m/y h:m') }}</td>
             <td>{{ li.dateLimiteInscription|date('d/m/y h:m') }}</td>
