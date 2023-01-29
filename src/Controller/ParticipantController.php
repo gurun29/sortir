@@ -69,7 +69,8 @@ class ParticipantController extends AbstractController
         }
 
         $testProfil = $this->getUser()->getId();
-        if ($testProfil <> $id){
+        if ($testProfil != $id){
+
             throw $this->createNotFoundException("route interdite");
         }
 
@@ -82,7 +83,7 @@ class ParticipantController extends AbstractController
         $monProfilForm->handleRequest($request);
 
         if ($monProfilForm->isSubmitted() && $monProfilForm->isValid()
-            && $monProfilForm->get('mdp')->getData() <> $monProfilForm->get('mdp2')->getData())
+            && $monProfilForm->get('mdp')->getData() != $monProfilForm->get('mdp2')->getData())
         {
             $this->addFlash('alert','les mots de passe sont différents');
         }
@@ -92,8 +93,8 @@ class ParticipantController extends AbstractController
                 && ($monProfil <> $monProfilCopy || $monProfilForm->get('mdp')->getData()<>"") )
         {
             //dump($monProfil);
-            if ($monProfilForm->get('mdp')->getData() <> $MDP) {
-                dump($monProfil);
+            if ($monProfilForm->get('mdp')->getData() != $MDP) {
+                //dump($monProfil);
                 $mdphash=$monProfilForm->get('mdp')->getData();
                 $monProfil->setPassword(
                     $passwordHasher->hashPassword(
@@ -207,6 +208,7 @@ class ParticipantController extends AbstractController
         else {
 
                 if ($sortie->getNbInscriptionsMax() === $sortie->getInscrit()->count()) {
+                    //todo set l'etat de la sortie
                     throw $this->createNotFoundException("Le nombre max de particpant est déja atteint");
                 }
                 if ($sortie->getDateHeureDebut() > $testDate) {
