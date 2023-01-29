@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\filtres\Filtres;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -84,16 +85,26 @@ class SortieRepository extends ServiceEntityRepository
     /**
      * @return Sortie[] Returns an array of Participant objects
      */
-    public function findSortiesDateCloturee($value): array
+    public function findSortiesDateCloturee($dateDuJour): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.dateLimiteInscription < :val')
-            ->setParameter('val', $value)
-            //->orderBy('p.id', 'ASC')
+        $query = $this->createQueryBuilder('s')
+            ->join(Etat::class, 'e')
+            ->andWhere('s.dateLimiteInscription < :val')
+            ->setParameter('val', $dateDuJour)
+//            ->andWhere('s.dateHeureDebut < :val1')
+//            ->setParameter('val1', $dateDuJour)
+
+            ->andWhere("e.libelle = 'Ouverte'")  //todo  faire join avec la class etat
+            //->setParameter('val2', "Ouverte")
+            //->orderBy('s.id', 'ASC')
             //->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+            //->getQuery()
+            //->getResult()
             ;
+        //dd($query);
+        return $query->getQuery()->getResult();
     }
+
+
 
 }
