@@ -188,8 +188,7 @@ class ParticipantController extends AbstractController
         //dump($sortie->getDateHeureDebut() );
         //dd($sortie->getDateLimiteInscription() );
 
-        if ($sortie->getDateHeureDebut() >= $testDate
-            && $sortie->getDateLimiteInscription() >= $testDate
+        if ($sortie->getDateLimiteInscription() >= $testDate
             && $sortie->getNbInscriptionsMax() > $sortie->getInscrit()->count() ){
             //dump($sortie);
             $sortie->addInscrit($profil);

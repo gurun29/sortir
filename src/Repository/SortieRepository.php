@@ -62,7 +62,7 @@ class SortieRepository extends ServiceEntityRepository
         if (!empty($search->nomDeSortie)){
             $query=$query
                 ->andWhere('s.nom Like :nomDeSortie')
-                ->setParameter('nomDeSortie', $search->nomDeSortie );
+                ->setParameter('nomDeSortie','%'.$search->nomDeSortie.'%');
 
         }
        if (!empty($search->dateMin)){
@@ -78,7 +78,7 @@ class SortieRepository extends ServiceEntityRepository
         if (!empty($search->camp)){
             $query->andWhere('s.siteOrganisateur = :camp')
                 ->setParameter('camp',$search->camp );
-            dd($query);
+
         }
 
         if (!empty($search->inscrit)){
@@ -96,7 +96,14 @@ class SortieRepository extends ServiceEntityRepository
 
             $query=$query
                 ->andWhere('e.libelle Like :sortiePasser')
-                ->setParameter('sortiePasser','Cloturée');
+                ->setParameter('sortiePasser','Archivée');
+
+
+        }
+        if (!empty($search->organisateur)){
+            $query=$query
+                ->andWhere('s.organisateur = :organisateur')
+                ->setParameter('organisateur',$search->organisateur);
         }
 
 
