@@ -14,6 +14,7 @@ use App\Repository\SortieRepository;
 
 use App\Repository\VilleRepository;
 
+use App\Services\GestionDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,11 +29,13 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie", name="app_sortie")
      */
-    public function index(SortieRepository $sortieRepository, EntityManagerInterface $em,Request $request, EtatRepository $etatRepository): Response
+    public function index(SortieRepository $sortieRepository, EntityManagerInterface $em,Request $request, EtatRepository $etatRepository, GestionDate $gestionDate): Response
 
     {
         //modification de la table Etat qd la date de cloture est dépassée
-        $this->modifEtatCloturee($sortieRepository, $etatRepository, $em);
+        //$this->modifEtatCloturee($sortieRepository, $etatRepository, $em);
+        $gestionDate->modifEtatCloturee();
+        $gestionDate->modifEtatArchivee();
 
         $data=new Filtres();
         $form=$this->createForm(FiltreType::class, $data);
@@ -83,30 +86,4 @@ class SortieController extends AbstractController
         ]);
     }
 
-        public function modifEtatCloturee(SortieRepository $sortieRepository, EtatRepository $etatRepository, EntityManagerInterface $entityManager)
-    {
-        $dateDuJour = new \DateTime();
-        //dump($dateDuJour);
-        $Sorties= $sortieRepository->findSortiesDateCloturee($dateDuJour);
-        //$etat = $etatRepository->find(6);
-
-        $etat = $etatRepository->findOneBy(array('libelle'=>"Cloturée"));
-
-        //dump($Sorties);
-        foreach ($Sorties as $Sortie) {
-            //$Sortie->setActif(false);
-            //$campus
-            $Sortie->setEtat($etat);
-            //dd($Sortie);
-            $entityManager->persist($Sortie);
-
-            $entityManager->flush();
-        }
-
-
-        //$Participant= $participantRepository->findByChangeDateEtat();
-        //$sortie = $sortieRepository->find($id);
-
-
-    }
 }
