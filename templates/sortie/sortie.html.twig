@@ -25,7 +25,14 @@
             <td><a href="{{ path('sortie_detail', {id: li.id}) }}">afficher</a>
            {% if   li.etat.libelle != 'Cloturée' %}
             <a href="{{ path('sinscrire', {id: li.id}) }}">S'inscire</a>
+           {% endif %}
+
+                {% for i in li.inscrit.count() %}
+                {% if app.user == li.inscrit %}
+
+                    <a href="{{ path('seDesister',{id:li.id}) }}">Se Desister</a>
                 {% endif %}
+                {% endfor %}
             </td>
             </tr>
 

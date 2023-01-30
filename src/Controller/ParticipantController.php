@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\Sortie;
 use App\Form\ParticipantType;
 use App\Entity\Participant;
 use App\Repository\CampusRepository;
@@ -218,10 +219,36 @@ class ParticipantController extends AbstractController
                     throw $this->createNotFoundException("L'inscription est terminée");
                 }
             throw $this->createNotFoundException("L'inscription n'est pas validé");
+        }}
+
+
+
+
+    /**
+     * @Route("/profil/seDesister/{id}", name="seDesister")
+     */
+    public function seDesister(  EntityManagerInterface $entityManager, ParticipantRepository $participantRepository, SortieRepository $sortieRepository, int $id):Response
+    {
+        $idParticipant = $this->getUser()->getId();
+        $participant = $participantRepository->find($idParticipant);
+        $sortie = $sortieRepository->find($id);
+        $date = new \DateTime();
+
+        if ($sortie->getDateLimiteInscription() > $date && $participant) {
+            $sortie->removeInscrit($participant);
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+            $this->addFlash('sucess', "vous avez été désinscrit de cette sortie");
+
+
+
         }
-
-
+        return $this->redirectToRoute("sortie_detail",[
+            "id" => $id,
+        ]);}
     }
+
+
 //
 //    public function testtt(ParticipantRepository $participantRepository, CampusRepository $campusRepository, EntityManagerInterface $entityManager)
 //    {
@@ -247,4 +274,4 @@ class ParticipantController extends AbstractController
 //
 //    }
 
-}
+
