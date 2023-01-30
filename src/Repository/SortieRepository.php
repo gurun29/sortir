@@ -78,6 +78,7 @@ class SortieRepository extends ServiceEntityRepository
         if (!empty($search->camp)){
             $query->andWhere('s.siteOrganisateur = :camp')
                 ->setParameter('camp',$search->camp );
+            dd($query);
         }
 
         if (!empty($search->inscrit)){
@@ -109,14 +110,37 @@ class SortieRepository extends ServiceEntityRepository
     public function findSortiesDateCloturee($dateDuJour): array
     {
         $query = $this->createQueryBuilder('s')
-            ->join(Etat::class, 'e')
+            //->join(Etat::class, 'e')
+            ->addSelect('e')
+            ->leftJoin('s.etat','e')
             ->andWhere('s.dateLimiteInscription < :val')
             ->setParameter('val', $dateDuJour)
-//            ->andWhere('s.dateHeureDebut < :val1')
-//            ->setParameter('val1', $dateDuJour)
+            //->andWhere('s.etat = :val2')
+            ->andWhere('e.libelle = :val2')
+            ->setParameter('val2', "Ouverte")
+            //->orderBy('s.id', 'ASC')
+            //->setMaxResults(10)
+            //->getQuery()
+            //->getResult()
+            ;
 
-            ->andWhere("e.libelle = 'Ouverte'")  //todo  faire join avec la class etat
-            //->setParameter('val2', "Ouverte")
+        //dd($query->getQuery()->getResult());
+        return $query->getQuery()->getResult();
+    }
+
+    /**
+     * @return Sortie[] Returns an array of Participant objects
+     */
+    public function findSortiesDateArchivee($dateDArchivage): array
+    {
+        $query = $this->createQueryBuilder('s')
+            //->join(Etat::class, 'e')
+            ->addSelect('e')
+            ->leftJoin('s.etat','e')
+            ->andWhere('s.dateLimiteInscription < :val')
+            ->setParameter('val', $dateDArchivage)
+            ->andWhere('e.libelle = :val2')
+            ->setParameter('val2', "Cloturée")
             //->orderBy('s.id', 'ASC')
             //->setMaxResults(10)
             //->getQuery()

@@ -35,6 +35,7 @@ class SortieController extends AbstractController
         //modification de la table Etat qd la date de cloture est dépassée
         //$this->modifEtatCloturee($sortieRepository, $etatRepository, $em);
         $gestionDate->modifEtatCloturee();
+        $gestionDate->modifEtatArchivee();
 
         $data=new Filtres();
         $form=$this->createForm(FiltreType::class, $data);

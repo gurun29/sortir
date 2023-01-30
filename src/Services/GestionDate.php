@@ -29,7 +29,7 @@ class GestionDate {
 
         $etat = $this->etatRepository->findOneBy(array('libelle'=>"Cloturée"));
 
-        dd($sorties);
+        //($sorties);
         foreach ($sorties as $sortie) {
             //$Sortie->setActif(false);
             //$campus
@@ -51,11 +51,14 @@ class GestionDate {
     public function modifEtatArchivee()
     {
 
-        $dateDuJour = new \DateTime();
-        //dump($dateDuJour);
-        $sorties= $this->sortieRepository->findSortiesDateCloturee($dateDuJour);
-
-        $etat = $this->etatRepository->findOneBy(array('libelle'=>"Cloturée"));
+        //$dateDuJour = new \DateTime();
+        //$dateDArchivage = new \DateTime('-1 month');
+        $dateDArchivage = new \DateTime('-30 days');
+        //dump($dateDArchivage);
+        //dd($dateDuJour);
+        $sorties= $this->sortieRepository->findSortiesDateArchivee($dateDArchivage);
+        //dd($sorties);
+        $etat = $this->etatRepository->findOneBy(array('libelle'=>"Archivée"));
 
 
         foreach ($sorties as $sortie) {
