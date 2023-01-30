@@ -185,11 +185,11 @@ class ParticipantController extends AbstractController
 
         $testDate = new \DateTime();
 
-        dump($sortie->getDateHeureDebut() );
-        dump($sortie->getDateLimiteInscription() );
+        //dump($sortie->getDateHeureDebut() );
+        //dd($sortie->getDateLimiteInscription() );
 
-        if ($sortie->getDateHeureDebut() < $testDate
-            && $sortie->getDateLimiteInscription() > $testDate
+        if ($sortie->getDateHeureDebut() >= $testDate
+            && $sortie->getDateLimiteInscription() >= $testDate
             && $sortie->getNbInscriptionsMax() > $sortie->getInscrit()->count() ){
             //dump($sortie);
             $sortie->addInscrit($profil);
@@ -212,7 +212,7 @@ class ParticipantController extends AbstractController
                     //todo set l'etat de la sortie
                     throw $this->createNotFoundException("Le nombre max de particpant est déja atteint");
                 }
-                if ($sortie->getDateHeureDebut() > $testDate) {
+                if ($sortie->getDateHeureDebut() < $testDate) {
                     //$this->addFlash('alert',"L'inscription n'est pas ouverte");
                     //return $this->render('sortie.html.twig');
                     throw $this->createNotFoundException("L'inscription n'est pas ouverte");

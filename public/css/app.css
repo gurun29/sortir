@@ -43,7 +43,11 @@ input, textarea, select  {
 
 }
 
-
+label {
+    display: inline-block;
+    max-width: 60%;
+    width: 300px;
+}
 
 .flash {
     padding: 20px;
@@ -62,14 +66,17 @@ input, textarea, select  {
     background-color: red;
 }
 
-.h45 {
-    width: 400px;margin: auto; margin-top: 70px;
+/*.h45 {*/
+/*    width: 400px;margin: auto; margin-top: 70px;*/
 
-}
-.h46 {
-    width: 400px;margin: auto;margin-top: 70px;
+/*}*/
 
-}
+/*.h46 {*/
+/*    max-width: 800px;*/
+/*    margin: auto;*/
+/*    margin-top: 70px;*/
+
+/*}*/
 
 .h47 {
     margin-left: 170px;
@@ -77,8 +84,9 @@ input, textarea, select  {
 }
 
 nav{
-    position: absolute;
-    top: 60px; left: 1140px;
+    /*position: absolute;*/
+    /*top: 60px; left: 1140px;*/
+    display: inline-grid;
 }
 ul{
  display: inline-block;list-style-type: none;display: inline-flex;
