@@ -109,7 +109,7 @@ a{
 
 [type="checkbox"], [type="radio"] {
     box-sizing: border-box;
-    padding: 0;position: absolute; top: 373px; left: 608px;
+    padding: 0;position: relative;
 }
 
 button,
@@ -169,10 +169,7 @@ th, td
 {
     border: 1px solid white;
 }
-form{
+form {
     display: block;
     width: 100%;
-
-
 }
-

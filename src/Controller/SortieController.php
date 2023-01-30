@@ -39,16 +39,12 @@ class SortieController extends AbstractController
         $data=new Filtres();
         $form=$this->createForm(FiltreType::class, $data);
         $form->handleRequest($request);
-        $sortie=$sortieRepository->findSearch($data);
 
-        $list = new Sortie();
-if ($form->isSubmitted()){
-    $list=$sortieRepository->findSearch($data);
-dump($list);
-}else {
 
-    $list = $sortieRepository->findAll();
-}
+
+
+    $list=$sortieRepository->findSearch($data,$this->getUser());
+
 
         return $this->render('sortie/sortie.html.twig', [
             'list' => $list,
