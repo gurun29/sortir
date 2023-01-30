@@ -2,45 +2,28 @@
 
 namespace App\filtres;
 
+use App\Entity\Campus;
 use Cassandra\Date;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Filtres extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
-    /**
-     *  @var string
-     *
-     */
-public $camp;
-    /**
-     *  @var string
-     */
-public $nomDeSortie='';
-    /**
-     *
-     * @var date
-     */
-public $dateMin;
-    /**
-     *
-     * @var date
-     */
-public $dateMax;
-    /**
-     * @var string
-     */
-public $organisateur ;
-/**
- * @var string
- */
-public $inscrit;
-/**
- * @var string
- */
-public $nonInscrit;
-    /**
-     * @var string
-     */
-public $sortiePasser;
+
+public ?Campus $camp= null;
+
+public ?string $nomDeSortie=null;
+
+public ?\DateTime $dateMin = null;
+
+public ?\DateTime $dateMax =null;
+
+public bool $organisateur=false ;
+
+public bool $inscrit = false;
+
+public bool $nonInscrit =false;
+
+public bool $sortiePasser = false;
 
 
 }

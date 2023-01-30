@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\filtres\Filtres;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -47,16 +49,19 @@ class SortieRepository extends ServiceEntityRepository
      * @param Filtres $search
      * @return Sortie[]
      */
-    public function findSearch(Filtres $search):array
+    public function findSearch(Filtres $search ,Participant $participant):array
     {
         $query=$this->createQueryBuilder('s')
-            ->join(Campus::class,'C');
+            ->join(Campus::class,'c')
+            ->join(Etat::class,'e');
+
+
 
 
 
         if (!empty($search->nomDeSortie)){
             $query=$query
-                ->andWhere('s.nom LIKE :nomDeSortie')
+                ->andWhere('s.nom Like :nomDeSortie')
                 ->setParameter('nomDeSortie', $search->nomDeSortie );
 
         }
@@ -71,9 +76,26 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('dateMax',$search->dateMax );
         }
         if (!empty($search->camp)){
-            $query=$query
-                ->andWhere('C.nom Like :camp')
+            $query->andWhere('s.siteOrganisateur = :camp')
                 ->setParameter('camp',$search->camp );
+        }
+
+        if (!empty($search->inscrit)){
+
+            $query->andWhere(':groupId MEMBER OF s.inscrits')
+            ->setParameter('groupId',$participant);
+        }
+        if (!empty($search->nonInscrit)){
+
+            $query->andWhere(':groupId NOT MEMBER OF s.inscrits')
+            ->setParameter('groupId',$participant);
+        }
+
+        if (!empty($search->sortiePasser)){
+
+            $query=$query
+                ->andWhere('e.libelle Like :sortiePasser')
+                ->setParameter('sortiePasser','Cloturée');
         }
 
 
