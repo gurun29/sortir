@@ -96,7 +96,7 @@ class SortieRepository extends ServiceEntityRepository
 
             $query=$query
                 ->andWhere('e.libelle Like :sortiePasser')
-                ->setParameter('sortiePasser','Archivée');
+                ->setParameter('sortiePasser','Terminée');
 
 
         }

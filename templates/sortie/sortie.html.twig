@@ -23,22 +23,15 @@
             <td>{{ li.etat.libelle }}</td>
             <td>{{ li.organisateur.nom }}</td>
             <td><a href="{{ path('sortie_detail', {id: li.id}) }}">afficher</a>
-                {% for l in li.inscrit.values %}
-                {% if li.etat.libelle == 'Ouverte' and app.user != l %}
+
+                {% if li.etat.libelle == 'Ouverte' and app.user not in li.inscrit %}
             <a href="{{ path('sinscrire', {id: li.id}) }}">S'inscire</a>
            {% endif %}
-                {% endfor %}
-
-
-               {#  {{ li.inscrit.count() }}
-                {{ dump(li.inscrit.values) }}
-                {{ dump(li.inscrit.values) }}#}
-                {% for i in li.inscrit.values %}
-                {% if app.user == i %}
+                {% if app.user in li.inscrit and li.etat.libelle == 'Ouverte' %}
 
                     <a href="{{ path('seDesister',{id:li.id}) }}">Se Desister</a>
                 {% endif %}
-                {% endfor %}
+
             </td>
             </tr>
 
