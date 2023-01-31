@@ -36,6 +36,7 @@ class SortieController extends AbstractController
         //$this->modifEtatCloturee($sortieRepository, $etatRepository, $em);
         $gestionDate->modifEtatCloturee();
         $gestionDate->modifEtatArchivee();
+        $gestionDate->modifEtatNbreInscrit();
 
         $data=new Filtres();
         $form=$this->createForm(FiltreType::class, $data);

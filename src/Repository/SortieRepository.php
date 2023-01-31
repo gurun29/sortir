@@ -8,9 +8,12 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\filtres\Filtres;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use App\Repository\CampusRepository;
+use function Symfony\Component\String\s;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -157,6 +160,59 @@ class SortieRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+
+
+    /**
+     * @return Sortie[] Returns an array of Participant objects
+     */
+    public function findSortiesNbreInscritMax(): array
+    {
+//        $qb = $this->createQueryBuilder('s');
+//        //$qb->addSelect('COUNT(s)')
+//            //->leftJoin('s.inscrits', 's')
+//        $qb->where(count(s.inscrits)===1)
+//            //->orderBy('c.title')
+//            ;
+//
+//        dd($qb->getQuery());
+
+
+
+        $query = $this->createQueryBuilder('s')
+            //->join(Etat::class, 'e')
+//            ->addSelect('e')
+//            ->leftJoin('s.etat','e')
+            //->addSelect('i')
+            //->innerJoin('s.inscrits','i', Join::ON,'s.id = i.sortie_id')
+            ->innerJoin("s.inscrits", 'i')
+
+            ->groupBy('s.id')
+////            ->addSelect('n')
+////            ->leftJoin('s.nbInscriptionsMax','n')
+////            ->andWhere('s.inscrits = :val')
+////            ->setParameter('val',s.nbInscriptionsMax)
+//            ->andWhere('e.libelle = :val2')
+//            ->setParameter('val2', "Ouverte")
+//            ->andWhere('s.nbInscriptionsMax = :val3')
+//            ->setParameter('val3',3)
+            //->addSelect('COUNT(*)')
+            ->andHaving('s.nbInscriptionsMax = COUNT(*)')
+
+            //->orderBy('s.id', 'ASC')
+            //->setMaxResults(10)
+            //->getQuery()
+            //->getResult()
+        ;
+
+
+        // EntityManagerInterface $em       $query = $em->createQuery('SELECT s FROM App\Entity\Sortie s WHERE s.nbInscriptionsMax = s.inscrits.');
+//        dump($query);
+//        ($query->getResult());
+//        return $query->getResult();
+
+        dd($query->getQuery());
+        return $query->getQuery()->getResult();
+    }
 
 
 }

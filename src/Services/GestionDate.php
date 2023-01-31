@@ -79,4 +79,31 @@ class GestionDate {
 
     }
 
+    public function modifEtatNbreInscrit()
+    {
+
+
+        $sorties= $this->sortieRepository->findSortiesNbreInscritMax();
+        //dd($sorties);
+        $etat = $this->etatRepository->findOneBy(array('libelle'=>"Archivée"));
+
+
+        foreach ($sorties as $sortie) {
+            //$Sortie->setActif(false);
+            //$campus
+            $sortie->setEtat($etat);
+            //dd($Sortie);
+            $this->entityManager->persist($sortie);
+
+
+        }
+
+        $this->entityManager->flush();
+
+        //$Participant= $participantRepository->findByChangeDateEtat();
+        //$sortie = $sortieRepository->find($id);
+
+
+    }
+
 }

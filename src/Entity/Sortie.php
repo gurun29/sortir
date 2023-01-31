@@ -241,6 +241,13 @@ class Sortie
 
         return $this;
     }
+
+//    public function countInscrit(Participant $inscrit): int
+//    {
+//
+//        return $this->inscrits.count();
+//    }
+
     public function __toString(){
         return $this->nom;
 

@@ -199,6 +199,11 @@ class ParticipantController extends AbstractController
             $entityManager->flush();
             $this->addFlash('sucess','Bravo, vous êtes inscrit à cette sortie');
 
+            if ($sortie->getNbInscriptionsMax() === $sortie->getInscrit()->count()) {
+                //todo set l'etat de la sortie
+
+            }
+
             return $this->redirectToRoute('sortie_detail',[
                 "id" => $id,
             ]);
