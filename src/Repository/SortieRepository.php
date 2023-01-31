@@ -176,32 +176,29 @@ class SortieRepository extends ServiceEntityRepository
 //
 //        dd($qb->getQuery());
 
-
-
         $query = $this->createQueryBuilder('s')
             //->join(Etat::class, 'e')
 //            ->addSelect('e')
 //            ->leftJoin('s.etat','e')
             //->addSelect('i')
             //->innerJoin('s.inscrits','i', Join::ON,'s.id = i.sortie_id')
-            ->innerJoin("s.inscrits", 'i')
+            //->innerJoin("s.inscrits", 'i', "WITH", 's.id = i.sortie')
+            ->innerJoin('junction_table', 'jt', "WITH", 's.id = jt.team_id')
+            ->innerJoin('participant', 'p', "WITH", 'p.id = jt.group_id')
+            ->andWhere('p.id = @participant_id')
 
-            ->groupBy('s.id')
-////            ->addSelect('n')
-////            ->leftJoin('s.nbInscriptionsMax','n')
-////            ->andWhere('s.inscrits = :val')
-////            ->setParameter('val',s.nbInscriptionsMax)
+            //->innerJoin("s.inscrits", 'i', "WITH", 's.inscrits = i.sorties')
+
+            ->groupBy("s.id")
+
 //            ->andWhere('e.libelle = :val2')
 //            ->setParameter('val2', "Ouverte")
-//            ->andWhere('s.nbInscriptionsMax = :val3')
-//            ->setParameter('val3',3)
-            //->addSelect('COUNT(*)')
-            ->andHaving('s.nbInscriptionsMax = COUNT(*)')
 
-            //->orderBy('s.id', 'ASC')
-            //->setMaxResults(10)
-            //->getQuery()
-            //->getResult()
+            //->addSelect('COUNT(*)')
+            //->andHaving("s.nbInscriptionsMax = COUNT(*)")
+
+            ->orderBy('s.id', 'ASC')
+
         ;
 
 
@@ -210,7 +207,8 @@ class SortieRepository extends ServiceEntityRepository
 //        ($query->getResult());
 //        return $query->getResult();
 
-        dd($query->getQuery());
+        //dd($query->getQuery());
+        dd($query->getQuery()->getResult());
         return $query->getQuery()->getResult();
     }
 
