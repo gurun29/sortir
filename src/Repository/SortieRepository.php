@@ -98,8 +98,8 @@ class SortieRepository extends ServiceEntityRepository
         if (!empty($search->sortiePasser)){
 
             $query=$query
-                ->andWhere('e.libelle Like :sortiePasser')
-                ->setParameter('sortiePasser','Archivée');
+                ->andWhere('e.libelle = :sortiePasser')
+                ->setParameter('sortiePasser','Ouverte');
 
 
         }
@@ -183,20 +183,29 @@ class SortieRepository extends ServiceEntityRepository
             //->addSelect('i')
             //->innerJoin('s.inscrits','i', Join::ON,'s.id = i.sortie_id')
             //->innerJoin("s.inscrits", 'i', "WITH", 's.id = i.sortie')
-            ->innerJoin('junction_table', 'jt', "WITH", 's.id = jt.team_id')
-            ->innerJoin('participant', 'p', "WITH", 'p.id = jt.group_id')
-            ->andWhere('p.id = @participant_id')
+
+            //->innerJoin("s.inscrits", 'i', "WITH", 's.id = s.id')
+            //->innerJoin("s.inscrits", 'i', "WITH", 'i.id = 53')
+            ->innerJoin("s.inscrits", 'i')
+
+            //->innerJoin('junction_table', 'jt', "WITH", 's.id = jt.sortie_id')
+            //->innerJoin('participant', 'p', "WITH", 'p.id = jt.participant_id')
+            //->andWhere('p.id = @participant_id')
 
             //->innerJoin("s.inscrits", 'i', "WITH", 's.inscrits = i.sorties')
 
-            ->groupBy("s.id")
+
 
 //            ->andWhere('e.libelle = :val2')
 //            ->setParameter('val2', "Ouverte")
 
+
+            //->groupBy("s.id")
+
             //->addSelect('COUNT(*)')
             //->andHaving("s.nbInscriptionsMax = COUNT(*)")
-
+            //->andHaving("s.nbInscriptionsMax = 1")
+            ->andWhere('SIZE')
             ->orderBy('s.id', 'ASC')
 
         ;
@@ -207,6 +216,7 @@ class SortieRepository extends ServiceEntityRepository
 //        ($query->getResult());
 //        return $query->getResult();
 
+        dump($query);
         //dd($query->getQuery());
         dd($query->getQuery()->getResult());
         return $query->getQuery()->getResult();

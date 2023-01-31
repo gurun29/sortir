@@ -34,10 +34,10 @@
                 {{ dump(li.inscrit.values) }}
                 {{ dump(li.inscrit.values) }}#}
                 {% for i in li.inscrit.values %}
-                {% if app.user == i %}
+                    {% if app.user == i %}
 
-                    <a href="{{ path('seDesister',{id:li.id}) }}">Se Desister</a>
-                {% endif %}
+                        <a href="{{ path('seDesister',{id:li.id}) }}">Se Desister</a>
+                    {% endif %}
                 {% endfor %}
             </td>
             </tr>
