@@ -13,7 +13,6 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use App\Repository\CampusRepository;
-use function Symfony\Component\String\s;
 
 /**
  * @extends ServiceEntityRepository<Sortie>
@@ -98,8 +97,8 @@ class SortieRepository extends ServiceEntityRepository
         if (!empty($search->sortiePasser)){
 
             $query=$query
-                ->andWhere('e.libelle = :sortiePasser')
-                ->setParameter('sortiePasser','Ouverte');
+                ->andWhere('e.libelle Like :sortiePasser')
+                ->setParameter('sortiePasser','Terminée');
 
 
         }
