@@ -54,11 +54,11 @@ class ParticipantRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findOneBySomeField($username): ?Participant
+    public function findOneByMailPseudo($usernameOrMail): ?Participant
     {
         return $this->createQueryBuilder('p')
            ->andWhere('p.pseudo = :username OR p.mail =:username')
-           ->setParameter('username', $username)
+           ->setParameter('username', $usernameOrMail)
            ->getQuery()
            ->getOneOrNullResult()
         ;
