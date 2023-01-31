@@ -30,8 +30,8 @@
 
     {% for i in sortie.inscrit.values %}
         <tr>
-             <td>{{ i.pseudo }}</td>
-            <td>{{ i.nom }}</td>
+             <td> {{ i.pseudo }}</td>
+            <td> <a href="{{ path('profil', {'id': i.id}) }}">{{ i.nom }}</a></td>
 
 
         </tr>
