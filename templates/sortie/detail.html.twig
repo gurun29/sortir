@@ -18,9 +18,27 @@
     <div>Code Postal : {{ sortie.lieu.ville.codePostal }}</div>
     <div>Ville : {{ sortie.lieu.ville.nom }}</div>
     <div>Latitude : {{ sortie.lieu.latitude }}</div>
-    <div>Longitude : {{ sortie.lieu.longitude }}</div>
+    <div>Longitude : {{ sortie.lieu.longitude }}</div><br>
+    <div><h2>liste des participants</h2></div>
+
+    <table>
+    <caption><h2>Liste des participants</h2> </caption><br>
+    <tr>
+        <th>Pseudo</th>
+        <th>Nom</th>
+    </tr>
+
+    {% for i in sortie.inscrit.values %}
+        <tr>
+             <td>{{ i.pseudo }}</td>
+            <td>{{ i.nom }}</td>
 
 
+        </tr>
+
+
+    {% endfor %}
+    </table>
 
 
 {% endblock %}

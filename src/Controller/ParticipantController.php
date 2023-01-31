@@ -225,7 +225,8 @@ class ParticipantController extends AbstractController
                     throw $this->createNotFoundException("L'inscription est terminée");
                 }
             throw $this->createNotFoundException("L'inscription n'est pas validé");
-        }}
+        }
+    }
 
 
 
@@ -252,6 +253,7 @@ class ParticipantController extends AbstractController
         return $this->redirectToRoute("sortie_detail",[
             "id" => $id,
         ]);}
+
     }
 
 
