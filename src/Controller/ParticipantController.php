@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\ImagesParticipant;
 use App\Entity\Sortie;
 use App\Form\ParticipantType;
 use App\Entity\Participant;
@@ -63,10 +64,10 @@ class ParticipantController extends AbstractController
         $monProfil = $this->getUser();
 
 //        $monProfil = $participantRepository->find($id);
-//        $monProfilCopy = clone $monProfil;
-//        if (!$monProfil){
-//            throw $this->createNotFoundException("le participant n'existe pas");
-//        }
+        $monProfilCopy = clone $monProfil;
+        if (!$monProfil){
+            throw $this->createNotFoundException("le participant n'existe pas");
+        }
 //
 //        $testProfil = $this->getUser()->getId();
 //        if ($testProfil != $id){
@@ -82,6 +83,7 @@ class ParticipantController extends AbstractController
 
         $monProfilForm->handleRequest($request);
 
+
         if ($monProfilForm->isSubmitted() && $monProfilForm->isValid()
             && $monProfilForm->get('mdp')->getData() != $monProfilForm->get('mdp2')->getData())
         {
@@ -90,9 +92,9 @@ class ParticipantController extends AbstractController
 
         if ($monProfilForm->isSubmitted() && $monProfilForm->isValid()
              && $monProfilForm->get('mdp')->getData() === $monProfilForm->get('mdp2')->getData()
-                && ( $monProfilForm->get('mdp')->getData()<>"") )
+             && ($monProfil <> $monProfilCopy || $monProfilForm->get('mdp')->getData()<>"") )
         {
-            //dump($monProfil);
+            //dd($monProfil);
             if ($monProfilForm->get('mdp')->getData() != $MDP) {
                 //dump($monProfil);
                 $mdphash=$monProfilForm->get('mdp')->getData();
@@ -104,6 +106,25 @@ class ParticipantController extends AbstractController
                 );
             }
 
+
+            $image = $monProfilForm->get('images')->getData();
+            If ($image) {
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+                // On crée l'image dans la base de données
+                $img = new ImagesParticipant();
+                $img->setName($fichier);
+
+                $monProfil->setImagesParticipant($img);
+
+            }
+
+            //dd($monProfil);
             //dump($monProfil);
             //dd($monProfilCopy);
 
@@ -113,7 +134,7 @@ class ParticipantController extends AbstractController
             $this->addFlash('sucess','profil modifié');
 
             //return $this->redirectToRoute('main');
-            return $this->redirectToRoute('mon_profil',[
+            return $this->redirectToRoute('monprofil',[
                 'id'=>$monProfil->getId(),
             ]);
         }

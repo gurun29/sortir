@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h1>bonjour</h1>
+    <h1>Bonjour {{ app.user.prenom }}</h1>
     {% include 'sortie/_filtres.html.twig' with {form:form} only %}
     <table>
     <caption><h2>Liste des sortie</h2> </caption><br>

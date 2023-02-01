@@ -3,6 +3,7 @@ body {
     background-attachment: fixed;
     color: #EEE;
     font-family: "Roboto Light";
+    margin-left:25px;
 }
 
 
@@ -28,11 +29,12 @@ main {
     display: inline-block;
     max-width: 60%;
     width: 200px;
+    vertical-align: top ;
 }
 .col2 {
     display: inline-block;
-    max-width: 60%;
-    width: 400px;
+    max-width: 100%;
+    /*width: 400px;*/
 }
 
 input, textarea, select  {

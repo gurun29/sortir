@@ -41,7 +41,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\Length(min = 10, max = 12, minMessage = "min_lenght", maxMessage = "max_lenght")
+     * @Assert\Length(min = 10, max = 16, minMessage = "min_lenght", maxMessage = "max_lenght")
      * @Assert\Regex(pattern="/^[0-9]*$/", message="number_only")
      */
     private $telephone;
@@ -95,6 +95,11 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50, unique=true)
      */
     private $pseudo;
+
+    /**
+     * @ORM\OneToOne(targetEntity=ImagesParticipant::class, mappedBy="participant", cascade={"persist", "remove"})
+     */
+    private $imagesParticipant;
 
     public function __construct()
     {
@@ -333,6 +338,28 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getImagesParticipant(): ?ImagesParticipant
+    {
+        return $this->imagesParticipant;
+    }
+
+    public function setImagesParticipant(?ImagesParticipant $imagesParticipant): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($imagesParticipant === null && $this->imagesParticipant !== null) {
+            $this->imagesParticipant->setParticipant(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($imagesParticipant !== null && $imagesParticipant->getParticipant() !== $this) {
+            $imagesParticipant->setParticipant($this);
+        }
+
+        $this->imagesParticipant = $imagesParticipant;
+
+        return $this;
     }
 
 

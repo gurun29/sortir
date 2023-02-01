@@ -8,7 +8,7 @@
 
 
 {#    </script>#}
-    <script src="{{ asset('setEtat.js') }}"></script>
+{#    <script src="{{ asset('setEtat.js') }}"></script>#}
 {% endblock %}
 
 {% block body %}
@@ -17,26 +17,40 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>#}
 
-<div class="h46">
-    <h1>Mon profil</h1>
-    <h2>Hello {{ app.user.prenom }}</h2>
-    {{ form_start(monProfilForm) }}
-{#    {{ form_widget(monProfilForm) }}#}
-    {{ form_row(monProfilForm.pseudo) }}
-    {{ form_row(monProfilForm.prenom) }}
-    {{ form_row(monProfilForm.nom) }}
-    {{ form_row(monProfilForm.telephone) }}
-    {{ form_row(monProfilForm.mail) }}
-    {{ form_row(monProfilForm.mdp) }}
-    {{ form_row(monProfilForm.mdp2) }}
-    {{ form_row(monProfilForm.getEstRattacheA) }}
+{#<div class="h46">#}
+<div>
+    <div class="col1">
+        {% if app.user.imagesParticipant %}
+        <img src="{{ asset('uploads/'~app.user.imagesParticipant.name) }}" alt="" width="150">
+        {% endif %}
+    </div>
+
+    <div class="col2">
+        <h1>Mon profil</h1>
+        <h2>Hello {{ app.user.prenom }}</h2>
+        {{ form_start(monProfilForm) }}
+        {#    {{ form_widget(monProfilForm) }}#}
+        {{ form_row(monProfilForm.pseudo) }}
+        {{ form_row(monProfilForm.prenom) }}
+        {{ form_row(monProfilForm.nom) }}
+        {{ form_row(monProfilForm.telephone) }}
+        {{ form_row(monProfilForm.mail) }}
+        {{ form_row(monProfilForm.mdp) }}
+        {{ form_row(monProfilForm.mdp2) }}
+        {{ form_row(monProfilForm.getEstRattacheA) }}
+        {{ form_row(monProfilForm.images) }}
+
+        <button  class="button2">Modifier mon profil</button>
 
 
-    <button  class="button2">Modifier mon profil</button>
-    {{ form_end(monProfilForm) }}
+        {{ form_end(monProfilForm) }}
+    </div>
 
 
 
 
 </div>
+
+
+
 {% endblock %}

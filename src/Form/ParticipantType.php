@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ParticipantType extends AbstractType
 {
@@ -46,6 +47,7 @@ class ParticipantType extends AbstractType
                     'label' => 'Mot de passe',
                     'mapped' => false,
                     'required'=> false,
+                    //'always_empty'=> true,
                 ]
             )
             ->add('mdp2',PasswordType::class,
@@ -77,6 +79,12 @@ class ParticipantType extends AbstractType
                 }
             ])
             //->add('estRattacheA')
+            ->add('images', FileType::class,[
+                'label' => false,
+                'multiple' => false,
+                'mapped' => false,
+                'required' => false
+            ])
         ;
     }
 
