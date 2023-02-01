@@ -30,50 +30,49 @@ class ParticipantController extends AbstractController
 //     */
     private $security;
 
+//    /**
+//     * @Route("/mon_profil", name="monprofil")
+//     */
+//    public function monProfil(Security $security) {
+//        $monProfil = $this->getUser();
+//        //$user = $this->get('security.token_storage')->getToken()->getUser();
+//        //$user->getUsername();
+//        //$monProfil = $this->container->get('security.context_listener')->getToken()->getUser()->getCandidat();
+//        //$monProfil =
+//        //dd($monProfil);
+//        //$monProfil =
+//        return $this->redirectToRoute('mon_profil',[
+//            'id'=>$monProfil->getId(),
+//        ]);
+//    }
     /**
-     * @Route("/mon_profil", name="monprofil")
-     */
-    public function monProfil(Security $security) {
-        $monProfil = $this->getUser();
-        //$user = $this->get('security.token_storage')->getToken()->getUser();
-        //$user->getUsername();
-        //$monProfil = $this->container->get('security.context_listener')->getToken()->getUser()->getCandidat();
-        //$monProfil =
-        //dd($monProfil);
-        //$monProfil =
-        return $this->redirectToRoute('mon_profil',[
-            'id'=>$monProfil->getId(),
-        ]);
-    }
-    /**
-     * @Route("/mon_profil/{id}", name="mon_profil")
+     * @Route("/monprofil/", name="monprofil")
      */
     public function modifier(
         Request $request,
         //UserAuthenticatorInterface $userAuthenticator,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager,
-        ParticipantRepository $participantRepository,
-        int $id
+        ParticipantRepository $participantRepository
     ): Response
     {
         //$MDP = "****";
         $MDP = "";
         $mdphash="";
 
+        $monProfil = $this->getUser();
 
-
-        $monProfil = $participantRepository->find($id);
-        $monProfilCopy = clone $monProfil;
-        if (!$monProfil){
-            throw $this->createNotFoundException("le participant n'existe pas");
-        }
-
-        $testProfil = $this->getUser()->getId();
-        if ($testProfil != $id){
-
-            throw $this->createNotFoundException("route interdite");
-        }
+//        $monProfil = $participantRepository->find($id);
+//        $monProfilCopy = clone $monProfil;
+//        if (!$monProfil){
+//            throw $this->createNotFoundException("le participant n'existe pas");
+//        }
+//
+//        $testProfil = $this->getUser()->getId();
+//        if ($testProfil != $id){
+//
+//            throw $this->createNotFoundException("route interdite");
+//        }
 
         $monProfilForm = $this->createForm(ParticipantType::class,$monProfil);
         //$monProfilForm->get('password')->setData($MDP);
@@ -91,7 +90,7 @@ class ParticipantController extends AbstractController
 
         if ($monProfilForm->isSubmitted() && $monProfilForm->isValid()
              && $monProfilForm->get('mdp')->getData() === $monProfilForm->get('mdp2')->getData()
-                && ($monProfil <> $monProfilCopy || $monProfilForm->get('mdp')->getData()<>"") )
+                && ( $monProfilForm->get('mdp')->getData()<>"") )
         {
             //dump($monProfil);
             if ($monProfilForm->get('mdp')->getData() != $MDP) {
@@ -164,12 +163,14 @@ class ParticipantController extends AbstractController
         EntityManagerInterface $entityManager,
         ParticipantRepository $participantRepository,
         SortieRepository $sortieRepository,
+        EtatRepository $etatRepository,
         int $id
     ): Response
     {
         //dump($id);
-        $idProfil = $this->getUser()->getId();
-        $profil = $participantRepository->find($idProfil);
+//        $idProfil = $this->getUser()->getId();
+//        $profil = $participantRepository->find($idProfil);
+        $profil= $this->getUser();
 
         if (!$profil){
             return $this->redirectToRoute('main');
@@ -179,30 +180,62 @@ class ParticipantController extends AbstractController
 
         $et = $sortie->getEtat($id);
 
-        if ($et->getLibelle()=== "Annulée"){
-            throw $this->createNotFoundException("La sortie est annulée");
-        }
-
         $testDate = new \DateTime();
 
-        //dump($sortie->getDateHeureDebut() );
-        //dd($sortie->getDateLimiteInscription() );
+
+// todo inutile si la date de début de la sortie est bien supérieur à la date limite d'inscription  (voir Créeer sortie)
+//        if ($sortie->getDateHeureDebut() > $testDate) {
+//            throw $this->createNotFoundException("La date limite d'inscription est dépassée");
+//        }
+        if ($sortie->getDateLimiteInscription() < $testDate) {
+            throw $this->createNotFoundException("La date limite d'inscription est dépassée");
+        }
+        if ($sortie->getNbInscriptionsMax() <= $sortie->getInscrit()->count()) {
+            //throw $this->createNotFoundException("Le nombre maxi de participant est atteint");
+            $this->addFlash('alert',"Votre inscription n'est pas valide. Le nombre maxi de participant est atteint");
+            return $this->redirectToRoute("app_sortie");
+        }
+        $collection = $sortie->getInscrit();
+        //$collection->contains('Desk');
+        //if ( in_array( $profil , (array)$sortie->getInscrit())  ){
+        if ( $collection->contains($profil) ){
+            $this->addFlash('alert','vous êtes déjà inscrit à cette sortie');
+            return $this->redirectToRoute('sortie_detail',[
+                "id" => $id,
+            ]);
+        }
+        if ($et->getLibelle() != "Ouverte") {
+            switch ($et->getLibelle()) {
+                case 'Cloturée':
+                    $messageErreur = "cloturée";
+                    break;
+                case 'Annulée':
+                    $messageErreur = "Annulée";
+                    break;
+            }
+            throw $this->createNotFoundException("L'inscription est " . $messageErreur);
+        }
+
+            //dump($sortie->getDateHeureDebut() );
 
         if ($sortie->getDateLimiteInscription() >= $testDate
+            && $profil
             && $sortie->getNbInscriptionsMax() > $sortie->getInscrit()->count() ){
             //dump($sortie);
             $sortie->addInscrit($profil);
+
+            if ($sortie->getNbInscriptionsMax() === $sortie->getInscrit()->count()) {
+                //todo tester le set l'etat de la sortie
+                $etat = $etatRepository->findOneBy(array('libelle'=>"Cloturée"));
+                $sortie->setEtat($etat);
+
+            }
             //$profil->addSortiesInscrit($id);
             //dd($sortie);
             $entityManager->persist($sortie);
 
             $entityManager->flush();
             $this->addFlash('sucess','Bravo, vous êtes inscrit à cette sortie');
-
-            if ($sortie->getNbInscriptionsMax() === $sortie->getInscrit()->count()) {
-                //todo set l'etat de la sortie
-
-            }
 
             return $this->redirectToRoute('sortie_detail',[
                 "id" => $id,
@@ -212,18 +245,8 @@ class ParticipantController extends AbstractController
 
         else {
 
-                if ($sortie->getNbInscriptionsMax() === $sortie->getInscrit()->count()) {
-                    //todo set l'etat de la sortie
-                    throw $this->createNotFoundException("Le nombre max de particpant est déja atteint");
-                }
-                if ($sortie->getDateHeureDebut() < $testDate) {
-                    //$this->addFlash('alert',"L'inscription n'est pas ouverte");
-                    //return $this->render('sortie.html.twig');
-                    throw $this->createNotFoundException("L'inscription n'est pas ouverte");
-                }
-                if ($sortie->getDateLimiteInscription() < $testDate) {
-                    throw $this->createNotFoundException("L'inscription est terminée");
-                }
+
+
             throw $this->createNotFoundException("L'inscription n'est pas validé");
         }
     }
@@ -234,27 +257,60 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/profil/seDesister/{id}", name="seDesister")
      */
-    public function seDesister(  EntityManagerInterface $entityManager, ParticipantRepository $participantRepository, SortieRepository $sortieRepository, int $id):Response
+    public function seDesister(
+        EntityManagerInterface $entityManager,
+        ParticipantRepository $participantRepository,
+        SortieRepository $sortieRepository,
+        EtatRepository $etatRepository,
+        int $id):Response
     {
         $idParticipant = $this->getUser()->getId();
         $participant = $participantRepository->find($idParticipant);
         $sortie = $sortieRepository->find($id);
         $date = new \DateTime();
 
-        if ($sortie->getDateLimiteInscription() > $date && $participant) {
+        if (!$participant){
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ( !$sortie->getInscrit()->contains($participant) ){
+            $this->addFlash('alert','vous êtes déjà desinscrit à cette sortie');
+            return $this->redirectToRoute('sortie_detail',[
+                "id" => $id,
+            ]);
+        }
+
+        if ($sortie->getDateLimiteInscription() < $date) {
+            throw $this->createNotFoundException("La date limite d'inscription (ou desinscription) est dépassée");
+        }
+//        if ($sortie->getEtat() === 'Ouverte' || $sortie->getEtat() === 'Cloturée') {
+//            return $this->redirectToRoute('main');
+//        }
+
+        if ($sortie->getDateLimiteInscription() >= $date
+            && $participant
+        )
+        {
+            if ($sortie->getNbInscriptionsMax() === $sortie->getInscrit()->count()) {
+                //todo tester le set l'etat de la sortie
+                $etat = $etatRepository->findOneBy(array('libelle'=>"Ouverte"));
+                $sortie->setEtat($etat);
+            }
+
             $sortie->removeInscrit($participant);
+
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addFlash('sucess', "vous avez été désinscrit de cette sortie");
-
-
-
+            return $this->redirectToRoute("sortie_detail",[
+                "id" => $id,
+            ]);
         }
-        return $this->redirectToRoute("sortie_detail",[
-            "id" => $id,
-        ]);}
 
+        throw $this->createNotFoundException("Le desistement n'est pas validé");
     }
+
+}
 
 
 //

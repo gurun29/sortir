@@ -38,7 +38,7 @@ class Sortie
     private $duree;
 
     /**
-     * @Assert\GreaterThanOrEqual(propertyPath="dateHeureDebut")
+     * @Assert\LessThanOrEqual(propertyPath="dateHeureDebut")
      * @ORM\Column(type="date")
      */
     private $dateLimiteInscription;

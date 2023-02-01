@@ -85,7 +85,7 @@ class GestionDate {
 
         $sorties= $this->sortieRepository->findSortiesNbreInscritMax();
         //dd($sorties);
-        $etat = $this->etatRepository->findOneBy(array('libelle'=>"Archivée"));
+        $etat = $this->etatRepository->findOneBy(array('libelle'=>"Cloturée"));
 
 
         foreach ($sorties as $sortie) {

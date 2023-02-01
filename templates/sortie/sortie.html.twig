@@ -14,6 +14,10 @@
         <th>Organisateur</th>
         <th>action</th>
     </tr>
+
+
+
+
     {% for li in list %}
 
         <tr> <td>{{ li.nom }}</td>
@@ -27,8 +31,9 @@
                 {% if li.etat.libelle == 'Ouverte' and app.user not in li.inscrit %}
             <a href="{{ path('sinscrire', {id: li.id}) }}">S'inscire</a>
            {% endif %}
-                {% if app.user in li.inscrit and li.etat.libelle == 'Ouverte' %}
-
+                {% if app.user in li.inscrit and li.dateLimiteInscription > date() %}
+{#                {% if app.user in li.inscrit and li.etat.libelle == 'Ouverte' %}    #}
+{# todo à tester. modifié pour pouvoir se desinscrire d'une sortie cloturée car nbre de participant max atteint  #}
                     <a href="{{ path('seDesister',{id:li.id}) }}">Se Desister</a>
                 {% endif %}
 

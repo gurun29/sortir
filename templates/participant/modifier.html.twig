@@ -18,8 +18,8 @@
 </style>#}
 
 <div class="h46">
-    <h1>Hello {{ parent() }}! Mon profil</h1>
-
+    <h1>Mon profil</h1>
+    <h2>Hello {{ app.user.prenom }}</h2>
     {{ form_start(monProfilForm) }}
 {#    {{ form_widget(monProfilForm) }}#}
     {{ form_row(monProfilForm.pseudo) }}

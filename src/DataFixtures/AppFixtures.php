@@ -26,7 +26,7 @@ class AppFixtures extends Fixture
 
         // créations des campus
         $campus = [];
-        for ($i=0; $i < 3; $i++) {
+        for ($i=0; $i < 4; $i++) {
             $campus[$i] = new Campus();
             $campus[$i]->setNom($faker->city());
             $manager->persist($campus[$i]);
@@ -106,9 +106,9 @@ class AppFixtures extends Fixture
 
 
         //creation de sorties
-        for ($a=1;$a<=5;$a++){
+        for ($a=1;$a<=10;$a++){
             $sortie=new Sortie();
-            $sortie->setNom($faker->unique()->title());
+            $sortie->setNom($faker->unique()->word());
             $sortie->setDuree($faker->randomDigit());
             $sortie->setInfosSortie($faker->text());
 
@@ -123,9 +123,10 @@ class AppFixtures extends Fixture
                $sortie->setEtat($etat[$key]);
            }
             $sortie->setNbInscriptionsMax($faker->randomDigit());
-            $fakersetDateHeureDebut = $faker->dateTimeBetween('-1 month','+1 month');
+            $fakersetDateHeureDebut = $faker->dateTimeBetween('+1 month','+6 month');
             $sortie->setDateHeureDebut($fakersetDateHeureDebut);
-            $sortie->setDateLimiteInscription($faker->dateTimeBetween($fakersetDateHeureDebut,'+1 month'));
+            //$sortie->setDateLimiteInscription($faker->dateTimeBetween('$fakersetDateHeureDebut -6 month','$fakersetDateHeureDebut'));
+            $sortie->setDateLimiteInscription($faker->dateTimeBetween('+1 day','+1 month'));
             //$sortie->setDateLimiteInscription($faker->dateTime('now +6 month'));
 
             $randomOrganisateur = (array) array_rand($participant,rand(1,count($participant)));
