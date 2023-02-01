@@ -28,13 +28,24 @@ main {
 .col1 {
     display: inline-block;
     max-width: 60%;
-    width: 200px;
+    width: 260px;
     vertical-align: top ;
 }
 .col2 {
     display: inline-block;
     max-width: 100%;
     /*width: 400px;*/
+}
+
+.col3 {
+    display: inline-block;
+    max-width: 80%;
+    width: 120px;
+    /*vertical-align: top ;*/
+}
+
+.colCenter {
+    text-align: center;
 }
 
 input, textarea, select  {

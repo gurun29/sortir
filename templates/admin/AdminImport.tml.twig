@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MonProfil{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block body %}
+
+
+    {#<div class="h46">#}
+    <div>
+        <div class="col1">
+
+        </div>
+
+        <div class="col2">
+            <h1>Mon profil</h1>
+            <h2>Hello {{ app.user.prenom }}</h2>
+            {{ form_start(importUserCSVForm) }}
+            {{ form_widget(importUserCSVForm) }}
+{#            {{ form_row(monProfilForm.pseudo) }}#}
+{#            {{ form_row(monProfilForm.prenom) }}#}
+{#            {{ form_row(monProfilForm.nom) }}#}
+{#            {{ form_row(monProfilForm.telephone) }}#}
+{#            {{ form_row(monProfilForm.mail) }}#}
+{#            {{ form_row(monProfilForm.mdp) }}#}
+{#            {{ form_row(monProfilForm.mdp2) }}#}
+{#            {{ form_row(monProfilForm.getEstRattacheA) }}#}
+{#            {{ form_row(monProfilForm.images) }}#}
+
+            <button class="button2">Upload csv file for import db </button>
+
+
+            {{ form_end(importUserCSVForm) }}
+        </div>
+
+
+
+
+    </div>
+
+
+
+{% endblock %}

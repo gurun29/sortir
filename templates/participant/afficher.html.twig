@@ -8,29 +8,42 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>#}
 
-<div class="example-wrapper">
+<div>
 {#    <h1>Hello {{ app.user }}!</h1>#}
+    <h2>{{ participant.pseudo }}</h2>
+
     <div class="tableau">
 
         <div class="col1">
-            <div class="h47">{{ participant.id }} <img src="{{ asset('img/logo-eni.png') }}" alt="photo"></div>
+            {% if participant.imagesParticipant %}
+                <img src="{{ asset('uploads/'~participant.imagesParticipant.name) }}" alt="photo" width="150">
+            {% endif %}
         </div>
-        <div class="h46">
-            <h2>{{ participant.pseudo }}</h2>
-            <div>Prénom :</div><div >{{ participant.prenom }}</div>
-            <div>Nom :</div><div>{{ participant.nom }}</div>
-            <div>Téléphone :</div><div>{{ participant.telephone }}</div>
-            <div>Email :</div><div>{{ participant.mail }}</div>
-            <div>Campus :</div><div>{{ participant.estRattacheA.nom }}</div>
+        <div class="tableau">
+            <div class="col3">
+                <div>Prénom :</div>
+                <div>Nom :</div>
+                <div>Téléphone :</div>
+                <div>Email :</div>
+                <div>Campus :</div>
+            </div>
+            <div class="col3">
+                <div >{{ participant.prenom }}</div>
+                <div>{{ participant.nom }}</div>
+                <div>{{ participant.telephone }}</div>
+                <div>{{ participant.mail }}</div>
+                <div>{{ participant.estRattacheA.nom }}</div>
+            </div>
         </div>
-        <div class="col1">
 
-        </div>
 
     </div>
 
-    <button><a href="{{ path('main') }}">Retour</a></button>
+
 </div>
+    <div class="colCenter">
+        <button><a href="{{ path('main') }}">Retour</a></button>
+    </div>
 
 
 {% endblock %}
