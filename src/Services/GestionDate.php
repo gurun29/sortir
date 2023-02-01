@@ -53,8 +53,8 @@ class GestionDate {
 
         //$dateDuJour = new \DateTime();
         //$dateDArchivage = new \DateTime('-1 month');
-        $dateDArchivage = new \DateTime('-30 days');
-        //dump($dateDArchivage);
+        $dateDArchivage = new \DateTime('-30 day');
+        //dd($dateDArchivage);
         //dd($dateDuJour);
         $sorties= $this->sortieRepository->findSortiesDateArchivee($dateDArchivage);
         //dd($sorties);

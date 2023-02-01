@@ -345,6 +345,24 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->imagesParticipant;
     }
 
+    public function removeImagesParticipant(ImagesParticipant $imagesParticipant): self
+    {
+//        if ($this->imagesParticipant->removeElement($imagesParticipant)) {
+//            // set the owning side to null (unless already changed)
+//            if ($imagesParticipant->getParticipant() === $this) {
+//                $imagesParticipant->setParticipant(null);
+//            }
+//        }
+        //$imagesParticipant->
+        $this->imagesParticipant->removeElement($imagesParticipant);
+        // set the owning side to null (unless already changed)
+//        if ($imagesParticipant->getParticipant() === $this) {
+//                $imagesParticipant->setParticipant(null);
+//        }
+
+        return $this;
+    }
+
     public function setImagesParticipant(?ImagesParticipant $imagesParticipant): self
     {
         // unset the owning side of the relation if necessary

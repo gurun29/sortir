@@ -80,11 +80,11 @@ class AppFixtures extends Fixture
             $lieu [$x]->setLatitude($faker->randomFloat(1, -90, 90));
 
             // on récupère un nombre aléatoire de campus dans un tableau
-            //$randomVille = (array) array_rand($ville, rand(1, count($ville)));
+            $randomVille = (array) array_rand($ville, rand(1, count($ville)));
             // puis on les ajoute au Customer
-            //foreach ($randomVille as $key2 => $value) {
+            foreach ($randomVille as $key2 => $value) {
                 $lieu[$x]->setVille($ville[$faker->randomDigit()]);
-            //}
+            }
             //$test =
             //$randomVille = (array) array_rand($ville, rand(1, count($ville)));
             // puis on les ajoute au Customer
@@ -98,7 +98,7 @@ class AppFixtures extends Fixture
         }
         //cration des etats
             $etat=[];
-        for ($l=0;$l<=2;$l++){
+        for ($l=1;$l<=9;$l++){
             $etat [$l] =new Etat();
             $etat [$l] ->setLibelle($faker->title());
             $manager->persist($etat[$l]);

@@ -9,6 +9,7 @@ use App\Form\ParticipantType;
 use App\Entity\Participant;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
+use App\Repository\ImagesParticipantRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,7 +55,7 @@ class ParticipantController extends AbstractController
         //UserAuthenticatorInterface $userAuthenticator,
         UserPasswordHasherInterface $passwordHasher,
         EntityManagerInterface $entityManager,
-        ParticipantRepository $participantRepository
+        ImagesParticipantRepository $imagesParticipantRepository
     ): Response
     {
         //$MDP = "****";
@@ -90,9 +91,11 @@ class ParticipantController extends AbstractController
             $this->addFlash('alert','les mots de passe sont différents');
         }
 
+        $image = $monProfilForm->get('images')->getData();
+
         if ($monProfilForm->isSubmitted() && $monProfilForm->isValid()
              && $monProfilForm->get('mdp')->getData() === $monProfilForm->get('mdp2')->getData()
-             && ($monProfil <> $monProfilCopy || $monProfilForm->get('mdp')->getData()<>"") )
+             && ($monProfil <> $monProfilCopy || $monProfilForm->get('mdp')->getData()<>"" || $image) )
         {
             //dd($monProfil);
             if ($monProfilForm->get('mdp')->getData() != $MDP) {
@@ -107,7 +110,7 @@ class ParticipantController extends AbstractController
             }
 
 
-            $image = $monProfilForm->get('images')->getData();
+
             If ($image) {
                 // On génère un nouveau nom de fichier
                 $fichier = md5(uniqid()).'.'.$image->guessExtension();
@@ -116,12 +119,28 @@ class ParticipantController extends AbstractController
                     $this->getParameter('images_directory'),
                     $fichier
                 );
-                // On crée l'image dans la base de données
-                $img = new ImagesParticipant();
-                $img->setName($fichier);
 
-                $monProfil->setImagesParticipant($img);
+                $photo = $monProfil->getImagesParticipant();
+                //dd($photo);
+                if ($photo)
+                {
+                    // On modifie l'image dans la base de données
+                    $photo->setName($fichier);
+                    $monProfil->setImagesParticipant($photo);
+                    //$photoProfil = $imagesParticipantRepository->find($photo);
+                    //$imagesParticipantRepository->remove($photo);
+                    //dd($photo);
+                    //$monProfil->removeImagesParticipant($photo);
 
+                }
+                else {
+                    // On crée l'image dans la base de données
+                    $img = new ImagesParticipant();
+                    $img->setName($fichier);
+                    $monProfil->setImagesParticipant($img);
+                }
+
+                //dd($photo);
             }
 
             //dd($monProfil);

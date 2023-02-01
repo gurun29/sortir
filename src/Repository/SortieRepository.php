@@ -54,8 +54,7 @@ class SortieRepository extends ServiceEntityRepository
     public function findSearch(Filtres $search ,Participant $participant):array
     {
         $query=$this->createQueryBuilder('s')
-            ->join(Campus::class,'c')
-            ->join(Etat::class,'e');
+            ->join(Campus::class,'c');
 
 
 
@@ -96,20 +95,26 @@ class SortieRepository extends ServiceEntityRepository
 
         if (!empty($search->sortiePasser)){
 
-            $query=$query
-                ->andWhere('e.libelle Like :sortiePasser')
-                ->setParameter('sortiePasser','Terminée');
-
+            $query
+                ->addSelect('e')
+                ->join('s.etat','e')
+                ->andWhere('e.libelle LIKE :sortiePasser')
+                ->setParameter('sortiePasser', "Passée")
+                ;
 
         }
         if (!empty($search->organisateur)){
-            $query=$query
+            $query
+//                ->addSelect('e')
+//                ->join('s.etat','e')
+//                ->andWhere('e.libelle LIKE :sortiePasser')
+//                ->setParameter('sortiePasser', "Passée")
                 ->andWhere('s.organisateur = :organisateur')
-                ->setParameter('organisateur',$search->organisateur);
+                ->setParameter('organisateur',$participant);
         }
 
 
-
+      //dd($query->getQuery());
       return $query->getQuery()->getResult();
     }
 
@@ -146,16 +151,17 @@ class SortieRepository extends ServiceEntityRepository
             //->join(Etat::class, 'e')
             ->addSelect('e')
             ->leftJoin('s.etat','e')
-            ->andWhere('s.dateLimiteInscription < :val')
+            ->andWhere('s.dateHeureDebut < :val')
             ->setParameter('val', $dateDArchivage)
             ->andWhere('e.libelle = :val2')
-            ->setParameter('val2', "Cloturée")
+            ->setParameter('val2', "Passée")
             //->orderBy('s.id', 'ASC')
             //->setMaxResults(10)
             //->getQuery()
             //->getResult()
             ;
-        //dd($query);
+        //dump($dateDArchivage);
+        //dd($query->getQuery()->getResult());
         return $query->getQuery()->getResult();
     }
 
