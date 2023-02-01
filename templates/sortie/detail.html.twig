@@ -4,6 +4,8 @@
 
 {% block body%}
 
+    {% if sortie.etat.libelle != "Archivée" %}
+
     <div>Le nom de la sortiie est :   {{ sortie.nom }}</div>
     <div>la date de début de la sortie est :   {{ sortie.dateHeureDebut|date('d/m/y h:m')}}</div>
     <div> l'organisateur est :   {{ sortie.organisateur.nom }}  {{ sortie.organisateur.prenom  }}</div>
@@ -40,5 +42,6 @@
     {% endfor %}
     </table>
 
+    {% endif %}
 
 {% endblock %}

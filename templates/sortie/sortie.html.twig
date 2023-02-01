@@ -19,7 +19,7 @@
 
 
     {% for li in list %}
-
+        {% if li.etat.libelle != "Archivée" %}
         <tr> <td>{{ li.nom }}</td>
              <td>{{ li.dateHeureDebut|date('d/m/y h:m') }}</td>
             <td>{{ li.dateLimiteInscription|date('d/m/y h:m') }}</td>
@@ -42,7 +42,7 @@
 
 
 
-
+        {% endif %}
     {% endfor %}
     </table>
 {% endblock %}
