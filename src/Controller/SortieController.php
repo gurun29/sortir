@@ -18,9 +18,10 @@ use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 
 use App\Services\GestionDate;
-use Cassandra\Date;
 use DateTime;
+use Detection\MobileDetect;
 use Doctrine\ORM\EntityManagerInterface;
+use MobileDetectBundle\DeviceDetector\MobileDetectorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,7 @@ class SortieController extends AbstractController
     /**
      * @Route("/sortie", name="app_sortie")
      */
-    public function index(SortieRepository $sortieRepository, EntityManagerInterface $em,Request $request, EtatRepository $etatRepository, GestionDate $gestionDate): Response
+    public function index(SortieRepository $sortieRepository, EntityManagerInterface $em,Request $request, EtatRepository $etatRepository, GestionDate $gestionDate,MobileDetectorInterface $mobileDetector): Response
 
     {
         //modification de la table Etat qd la date de cloture est dépassée
@@ -53,9 +54,34 @@ class SortieController extends AbstractController
     $list=$sortieRepository->findSearch($data,$this->getUser());
 
 
+      /*  $detect = new De;
+        if ($detect->isMobile())
+        {
+            $device='mobile';
+        }
+        elseif ($detect->isTablet()){
+            $device='tablet';
+        }else
+        {
+            $device='computer';}*/
+
+        if ($mobileDetector->isMobile()){
+            $device='mobile';
+        }
+       elseif ($mobileDetector->isTablet()){
+            $device='tablet';
+       }
+        else {
+        $device = 'computer';
+    }
+
+
+
+
         return $this->render('sortie/sortie.html.twig', [
             'list' => $list,
-            'form'=>$form->createView()
+            'form'=>$form->createView(),
+            'device'=>$device
         ]);
 
 

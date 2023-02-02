@@ -1,8 +1,36 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <h1>Bonjour {{ app.user.prenom }}</h1>
+{% if device == 'mobile' %}
+
+
+
+<table>
+
+    <caption><h2>Mes sortie</h2></caption>
+    <tr>
+        <th>Nom</th>
+        <th>Date  de la sortie</th>
+        <th>Lieu</th>
+    </tr>{% for li in list %}
+    {% if app.user in li.inscrit %}
+<tr>
+    <td><a href="{{ path('sortie_detail', {id: li.id}) }}">{{ li.nom }}</a></td>
+    <td>{{ li.dateHeureDebut|date('d-m-Y') }}</td>
+    <td>{{ li.lieu.nom }}</td>
+</tr>
+
+
+    {% endif %}
+    {% endfor %}
+    </table>
+{% else%}
+
     {% include 'sortie/_filtres.html.twig' with {form:form} only %}
     <table>
+
+
+
     <caption><h2>Liste des sortie</h2> </caption><br>
     <tr>
         <th>Nom de la sortie</th>
@@ -16,10 +44,9 @@
         <a href="{{ path('sortie_creation') }}">Créer une sortie</a>
     </tr>
 
+        {% for li in list %}
 
 
-
-    {% for li in list %}
         {% if li.etat.libelle != "Archivée" %}
         <tr> <td>{{ li.nom }}</td>
              <td>{{ li.dateHeureDebut|date('d/m/y h:m') }}</td>
@@ -51,11 +78,12 @@
 
 
         {% endif %}
+
     {% endfor %}
     </table>
+{% endif %}
 {% endblock %}
 
 {% block title %}
 Sortie
 {% endblock %}
-
