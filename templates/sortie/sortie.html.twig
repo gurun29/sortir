@@ -13,6 +13,7 @@
 
         <th>Organisateur</th>
         <th>action</th>
+        <a href="{{ path('sortie_creation') }}">Créer une sortie</a>
     </tr>
 
 
@@ -35,7 +36,14 @@
 {#                {% if app.user in li.inscrit and li.etat.libelle == 'Ouverte' %}    #}
 {# todo à tester. modifié pour pouvoir se desinscrire d'une sortie cloturée car nbre de participant max atteint  #}
                     <a href="{{ path('seDesister',{id:li.id}) }}">Se Desister</a>
+
+
+
                 {% endif %}
+
+
+
+
 
             </td>
             </tr>

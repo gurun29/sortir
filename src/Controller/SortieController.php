@@ -3,18 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 
 use App\filtres\Filtres;
+use App\Form\CreationSortieType;
 use App\Form\FiltreType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
+use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 
 use App\Repository\VilleRepository;
 
 use App\Services\GestionDate;
+use Cassandra\Date;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,5 +91,37 @@ class SortieController extends AbstractController
 
         ]);
     }
+
+
+    /**
+     * @Route("/creationSortie", name="sortie_creation")
+     */
+    public function creationSortie(ParticipantRepository $participantRepository, EntityManagerInterface $em, Request $request, EtatRepository $etatRepository ): Response
+    {
+        $participant = $this->getUser();
+        $dateDuJour = new DateTime();
+        $sortie = new Sortie();
+        $sortieForm = $this->createForm(CreationSortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
+
+        if($sortieForm->isSubmitted() && $sortieForm->isValid() && $sortie->getDateHeureDebut()> $dateDuJour){
+            $etat = $etatRepository->findOneBy(array('libelle'=>"Créée"));
+            $sortie->setEtat($etat);
+            $sortie->setOrganisateur($participant);
+            $em-> persist($sortie);
+
+            $em->flush();
+
+            $this->addFlash('success', 'La sortie a bien été créée');
+            return $this->redirectToRoute('main');
+        }
+
+
+        return $this->render('sortie/creation_sortie.html.twig', [
+            'controller_name' => 'SortieController',
+            'sortieForm' => $sortieForm->createView()
+        ]);
+    }
+
 
 }

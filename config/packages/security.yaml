@@ -6,7 +6,7 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         #users_in_memory: { memory: null }
-        users :
+        app_user_provider:
             entity:
                 class: App\Entity\Participant
 
@@ -16,14 +16,14 @@ security:
             security: false
         main:
             lazy: true
-            provider: users
+            provider: app_user_provider
             custom_authenticator: App\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
-                path: /
+                path:  /
 
                 # where to redirect after logout
                 # target: app_any_route
