@@ -20,8 +20,17 @@
         {{ form_row(modificationSortieForm.siteOrganisateur) }}
         {{ form_row(modificationSortieForm.lieu) }}
 {#        {{ form_row(modificationSortieForm.latitude) }}#}
-        {{ form_row(modificationSortieForm) }}
+        <label>Rue </label>
+        <h4 >{{ lieu.rue }}</h4>
+        <label>Code postal </label>
+        <h4 >{{ ville.codePostal }}</h4>
 
+        <label>latitude </label>
+        <input value="{{ lieu.latitude }}">
+        <label>longitude </label>
+        <input value="{{ lieu.longitude }}">
+
+{#        {{ form_row(lieu.ville) }}#}
 {#        {% for lieu in modificationSortieForm.lieu %}#}
 {#            {{ form_row(modificationSortieForm.lieu) }}#}
 {#         <div>#}

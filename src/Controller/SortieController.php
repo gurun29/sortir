@@ -12,6 +12,7 @@ use App\Form\CreationSortieType;
 use App\Form\FiltreType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 
@@ -157,15 +158,17 @@ class SortieController extends AbstractController
         //ParticipantRepository $participantRepository,
         EntityManagerInterface $em,
         Request $request,
-        EtatRepository $etatRepository,
         SortieRepository $sortieRepository,
         int $id
     ): Response
     {
-        $participant = $this->getUser();
+
         $dateDuJour = new DateTime();
         $sortie = $sortieRepository->find($id);
 
+        $lieu = $sortie->getLieu();
+        $ville= $lieu->getVille();
+        //$lieu = $lieuRepository->find($sortie.getLieu);
 
         // todo if $participant = sortie.participant
 
@@ -176,6 +179,9 @@ class SortieController extends AbstractController
             //$etat = $etatRepository->findOneBy(array('libelle'=>"Créée"));
             //$sortie->setEtat($etat);
             //$sortie->setOrganisateur($participant);
+
+            //todo recupérer les infos du fichier twig
+
             $em-> persist($sortie);
 
             $em->flush();
@@ -187,7 +193,9 @@ class SortieController extends AbstractController
 
         return $this->render('sortie/modification_sortie.html.twig', [
             'controller_name' => 'SortieController',
-            'modificationSortieForm' => $sortieForm->createView()
+            'modificationSortieForm' => $sortieForm->createView(),
+            'lieu'=>$lieu,
+            'ville'=>$ville,
         ]);
     }
 }
