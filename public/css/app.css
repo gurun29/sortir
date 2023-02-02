@@ -194,3 +194,8 @@ form {
     display: block;
     width: 100%;
 }
+
+
+#ExCSV {
+    width: 800px;
+}

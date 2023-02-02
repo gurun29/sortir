@@ -4,7 +4,8 @@
 
         {% if app.user %}
             {% if is_granted("ROLE_ADMIN") %}
-                <li><a href="{{ path('admin_importUserCSV') }}" title="Admin import user">import user csv</a></li>
+                <li><a href="{{ path('admin_importUserCSV') }}" title="Admin import user csv">Import participant csv</a></li>
+                <li><a href="{{ path('admin_importUser') }}" title="Admin créer user">Créer participant</a></li>
 
     {#            <li><a href="{{ path('admin_villes') }}" title="Admin villes">Villes</a></li>#}
     {#            <li><a href="{{ path('admin_campus') }}" title="Admin campus">Campus</a></li>#}

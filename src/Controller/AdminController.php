@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\ImagesParticipant;
 use App\Entity\Participant;
 use App\Form\AdminImportUserCsvType;
+use App\Form\AdminImportUserType;
 use App\Repository\CampusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Node\Expr\Array_;
@@ -27,7 +29,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/importUserCSV", name="importUserCSV")
      */
-    public function importUser(
+    public function importUserCSV(
         EntityManagerInterface $em,
         Request $request,
         CampusRepository $campusRepository,
@@ -40,7 +42,7 @@ class AdminController extends AbstractController
         $ImportUserCSVForm = $this->createForm(AdminImportUserCsvType::class,$newParticipant);
         $ImportUserCSVForm->handleRequest($request);
 
-        if ($ImportUserCSVForm->isSubmitted() ) {
+        if ($ImportUserCSVForm->isSubmitted() && $ImportUserCSVForm->isValid() ) {
 //            dump($ImportUserCSVForm);
             $file = $ImportUserCSVForm->get('csv');
             $file->getData();
@@ -122,4 +124,87 @@ class AdminController extends AbstractController
         ]);
 
     }
+
+    /**
+     * @Route("/importUser", name="importUser")
+     */
+    public function importUser (
+        EntityManagerInterface $entityManager,
+        Request $request,
+        CampusRepository $campusRepository,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response
+    {
+        $monProfil = $this->getUser();
+        $newParticipant = new Participant();
+
+        $nouveauParticipantForm = $this->createForm(AdminImportUserType::class,$newParticipant);
+        $nouveauParticipantForm->handleRequest($request);
+
+        $image = $nouveauParticipantForm->get('images')->getData();
+
+        if ($nouveauParticipantForm->isSubmitted() && $nouveauParticipantForm->isValid()
+            //&& $nouveauParticipantForm->get('mdp')->getData() === $nouveauParticipantForm->get('mdp2')->getData()
+            //&& ($monProfil <> $nouveauParticipantForm || $nouveauParticipantForm->get('mdp')->getData()<>"" || $image)
+           )
+        {
+            //dd($monProfil);
+
+                $mdphash=$nouveauParticipantForm->get('plainPassword')->getData();
+            $newParticipant->setPassword(
+                    $passwordHasher->hashPassword(
+                        $newParticipant,
+                        $mdphash
+                    )
+                );
+
+            If ($image) {
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()).'.'.$image->guessExtension();
+                // On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+
+
+                    // On crée l'image dans la base de données
+                    $img = new ImagesParticipant();
+                    $img->setName($fichier);
+                    $newParticipant->setImagesParticipant($img);
+                }
+
+                //$test = $monProfil->getRoles();
+                $test2 = array("ROLE_USER");
+//                $newParticipant->setRoles(array(["ROLE_USER"]));
+                $newParticipant->setRoles($test2);
+                //dump($test);
+                //dump($test2);
+                //dump($monProfil);
+                //dd($nouveauParticipantForm);
+                //$testmdp = $nouveauParticipantForm->get('plainPassword');
+                //$monProfil->setPassword($testmdp);
+
+                //dump($testmdp);
+                //dd($monProfil);
+            //dd($monProfil);
+            //dump($monProfil);
+            //dd($monProfilCopy);
+
+                $entityManager->persist($newParticipant);
+
+                $entityManager->flush();
+                $this->addFlash('sucess','profil ajouté');
+
+            }
+
+
+
+        return $this->render('admin/AdminCreerParticipant.tml.twig', [
+            'importUserForm' => $nouveauParticipantForm ->createView()
+        ]);
+
+    }
+
 }

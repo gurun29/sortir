@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MonProfil{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block body %}
+
+
+    {#<div class="h46">#}
+    <div>
+        <div class="col1">
+
+        </div>
+
+
+
+        <div class="col2">
+            <h1>Créer nouveau participant</h1>
+            <h2>Hello {{ app.user.prenom }}, Complete les champs pour créer un nouveau participant dans la bdd</h2>
+            {{ form_start(importUserForm) }}
+            {{ form_widget(importUserForm) }}
+{#            {{ form_row(importUserForm.pseudo) }}#}
+            <button class="button2">Créer nouveau participant</button>
+
+
+            {{ form_end(importUserForm) }}
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

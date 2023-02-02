@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}MonProfil{% endblock %}
+{% block title %}Import CSV file{% endblock %}
 
 {% block javascripts %}
 
@@ -11,13 +11,11 @@
 
     {#<div class="h46">#}
     <div>
-        <div class="col1">
 
-        </div>
 
         <div class="col2">
-            <h1>Mon profil</h1>
-            <h2>Hello {{ app.user.prenom }}</h2>
+            <h1>Import CSV file</h1>
+            <h2>Hello {{ app.user.prenom }}, telecharge un fichier csv</h2>
             {{ form_start(importUserCSVForm) }}
             {{ form_widget(importUserCSVForm) }}
 {#            {{ form_row(monProfilForm.pseudo) }}#}
@@ -30,17 +28,31 @@
 {#            {{ form_row(monProfilForm.getEstRattacheA) }}#}
 {#            {{ form_row(monProfilForm.images) }}#}
 
-            <button class="button2">Upload csv file for import db </button>
+            <button class="button2">Import participant in db after upload csv file</button>
 
 
             {{ form_end(importUserCSVForm) }}
         </div>
 
 
+{#        <div class="col2">#}
+{#            <h1>Mon profil</h1>#}
+{#            <h2>Hello {{ app.user.prenom }}</h2>#}
+{#            {{ form_start(importUserForm) }}#}
+{#            {{ form_widget(importUserForm) }}#}
+{#            #}
+{#            <button class="button2">Créer nouveau participant</button>#}
 
+
+{#            {{ form_end(importUserForm) }}#}
+{#        </div>#}
 
     </div>
 
+    <div class="col1">
+        <h1>Exemple de fichier CSV</h1>
+        <a href="{{ path('main') }}"></a><img src="{{ asset('img/Import-new_participant.png') }}" alt="Sortir!" id="ExCSV" >
 
+    </div>
 
 {% endblock %}
