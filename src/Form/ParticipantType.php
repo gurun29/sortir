@@ -80,7 +80,7 @@ class ParticipantType extends AbstractType
             ])
             //->add('estRattacheA')
             ->add('images', FileType::class,[
-                'label' => false,
+                'label' => 'photo de profil',
                 'multiple' => false,
                 'mapped' => false,
                 'required' => false
