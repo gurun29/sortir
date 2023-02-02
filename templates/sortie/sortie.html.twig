@@ -68,6 +68,10 @@
 
                 {% endif %}
 
+                {% if app.user.nom is same as li.organisateur.nom %}
+                <a href="{{ path('modification_creation',{id:li.id}) }}">Modifier</a>
+                {% endif %}
+
 
 
 

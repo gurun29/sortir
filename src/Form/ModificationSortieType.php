@@ -74,7 +74,7 @@ class ModificationSortieType extends AbstractType
                 {        return $villeRepository->createQueryBuilder('v')->orderBy('v.nom','ASC');}])
 
 
-            ->add('longitude', null, [
+            ->add('longitude',TextType::class, [
                 'label' => 'Longitude :',
                 'required' => false,
             ])

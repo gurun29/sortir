@@ -8,10 +8,12 @@ use App\Entity\Sortie;
 use App\Entity\Ville;
 
 use App\filtres\Filtres;
+use App\Form\AnnulerSortieType;
 use App\Form\CreationSortieType;
 use App\Form\FiltreType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
+use App\Repository\ImagesParticipantRepository;
 use App\Repository\LieuRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
@@ -26,6 +28,7 @@ use MobileDetectBundle\DeviceDetector\MobileDetectorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Etat;
 
@@ -158,37 +161,37 @@ class SortieController extends AbstractController
         //ParticipantRepository $participantRepository,
         EntityManagerInterface $em,
         Request $request,
+        EtatRepository $etatRepository,
         SortieRepository $sortieRepository,
         int $id
     ): Response
     {
-
+        $participant = $this->getUser();
         $dateDuJour = new DateTime();
         $sortie = $sortieRepository->find($id);
 
         $lieu = $sortie->getLieu();
         $ville= $lieu->getVille();
         //$lieu = $lieuRepository->find($sortie.getLieu);
-
-        // todo if $participant = sortie.participant
-
         $sortieForm = $this->createForm(CreationSortieType::class, $sortie);
         $sortieForm->handleRequest($request);
+      // if ($participant === $sortie->getOrganisateur()->getNom()) {
 
-        if($sortieForm->isSubmitted() && $sortieForm->isValid() && $sortie->getDateHeureDebut()> $dateDuJour){
-            //$etat = $etatRepository->findOneBy(array('libelle'=>"Créée"));
-            //$sortie->setEtat($etat);
-            //$sortie->setOrganisateur($participant);
 
-            //todo recupérer les infos du fichier twig
+           if ($sortieForm->isSubmitted() && $sortieForm->isValid() && $sortie->getDateHeureDebut() > $dateDuJour) {
+               $etat = $etatRepository->findOneBy(array('libelle' => "Ouverte"));
+               //$sortie->setEtat($etat);
+               //$sortie->setOrganisateur($participant);
+               $sortie->setEtat($etat);
 
-            $em-> persist($sortie);
+               $em->persist($sortie);
 
-            $em->flush();
+               $em->flush();
 
-            $this->addFlash('success', 'La sortie a bien été créée');
-            return $this->redirectToRoute('main');
-        }
+               $this->addFlash('success', 'La sortie a bien été publier');
+               return $this->redirectToRoute('main');
+           }
+      // }
 
 
         return $this->render('sortie/modification_sortie.html.twig', [
@@ -196,6 +199,44 @@ class SortieController extends AbstractController
             'modificationSortieForm' => $sortieForm->createView(),
             'lieu'=>$lieu,
             'ville'=>$ville,
+            'sortie'=>$sortie,
+
         ]);
     }
+
+    /**
+     * @Route("/annuler/{id}", name="annuler_sortie")
+     */
+    public function annuler_sortie(Request $request, EntityManagerInterface $em, Sortie $sortie,EtatRepository $etatRepository){
+
+        $participant = $this->getUser();
+
+        $form = $this->createForm(AnnulerSortieType::class, $sortie);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $sortie->setInfosSortie($form['infosSortie']->getData());
+            $etat=$etatRepository->findOneBy(array('libelle'=>'Annulée'));
+            $sortie->setEtat($etat);
+
+            $em->flush();
+            $this->addFlash('success', 'La sortie a été annulée !');
+
+
+            return $this->redirectToRoute('main');
+
+        }
+
+
+
+        return $this->render('sortie/annuler.html.twig', [
+            'page_name' => 'Annuler Sortie',
+            'sortie' => $sortie,
+            'participants' => $participant,
+            'form' => $form->createView(),
+
+        ]);
+    }
+
 }

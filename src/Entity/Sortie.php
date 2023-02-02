@@ -54,6 +54,11 @@ class Sortie
     private $infosSortie;
 
     /**
+     * @ORM\Column (type="text")
+     */
+    private $motif;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -190,6 +195,15 @@ class Sortie
         return $this;
     }
 
+    public function getMotif():?string{
+        return $this->motif;
+    }
+    public function setMotif(string $motif): self
+    {
+        $this->motif = $motif;
+
+        return $this;
+    }
     public function getOrganisateur(): ?Participant
     {
         return $this->organisateur;
