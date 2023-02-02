@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Campus;
+use App\filtres\FiltresCampus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -63,4 +64,25 @@ class CampusRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    //public function findSearchCampus()
+    public function findSearchCampus(FiltresCampus $search)
+    {
+        $query=$this->createQueryBuilder('c');
+            //->join(Campus::class,'c');
+
+
+
+        if (!empty($search->nomDeSortie)){
+            $query->andWhere('c.nom LIKE :camp')
+            //$query->andWhere("u('c.nom')->ignoreCase()->indexOf(u(':camp'))")
+                ->setParameter('camp',$search->nomDeSortie );
+
+        }
+        //dump($search->nomDeSortie);
+        //dd($query->getQuery());
+
+
+        //dd($query->getQuery());
+        return $query->getQuery()->getResult();
+    }
 }

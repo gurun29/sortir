@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Modifier une sortie</h1>
+
+    {{form_start(modificationSortieForm)}}
+<div class="colCenter">
+
+{#    {{form_widget(modificationSortieForm)}}#}
+    <div class="col1">
+        {{ form_row(modificationSortieForm.nom) }}
+        {{ form_row(modificationSortieForm.dateHeureDebut) }}
+        {{ form_row(modificationSortieForm.dateLimiteInscription) }}
+        {{ form_row(modificationSortieForm.nbInscriptionsMax) }}
+        {{ form_row(modificationSortieForm.duree) }}
+        {{ form_row(modificationSortieForm.infosSortie) }}
+    </div>
+
+    <div class="col1">
+        {{ form_row(modificationSortieForm.siteOrganisateur) }}
+        {{ form_row(modificationSortieForm.lieu) }}
+{#        {{ form_row(modificationSortieForm.latitude) }}#}
+        {{ form_row(modificationSortieForm) }}
+
+{#        {% for lieu in modificationSortieForm.lieu %}#}
+{#            {{ form_row(modificationSortieForm.lieu) }}#}
+{#         <div>#}
+{#            {{ lieu.nom }}#}
+{#         </div>#}
+{#        {% endfor %}#}
+
+
+{#        {{ form_row(modificationSortieForm.lieu.codepostal) }}#}
+{#        {{ form_row(modificationSortieForm.lieu) }}#}
+{#        {{ form_row(modificationSortieForm.longitude) }}#}
+    </div>
+
+</div>
+
+
+    {{ form_end(modificationSortieForm) }}
+
+    <div class="colCenter">
+        <button class="button2">Modification sortie</button>
+    </div>
+
+
+{% endblock %}
+
+{% block title %}
+    Modifier sortie
+{% endblock %}
+

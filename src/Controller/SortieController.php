@@ -124,4 +124,44 @@ class SortieController extends AbstractController
     }
 
 
+    /**
+     * @Route("/modificationSortie/{id}", name="modification_creation")
+     */
+    public function modificationSortie(
+        //ParticipantRepository $participantRepository,
+        EntityManagerInterface $em,
+        Request $request,
+        EtatRepository $etatRepository,
+        SortieRepository $sortieRepository,
+        int $id
+    ): Response
+    {
+        $participant = $this->getUser();
+        $dateDuJour = new DateTime();
+        $sortie = $sortieRepository->find($id);
+
+
+        // todo if $participant = sortie.participant
+
+        $sortieForm = $this->createForm(CreationSortieType::class, $sortie);
+        $sortieForm->handleRequest($request);
+
+        if($sortieForm->isSubmitted() && $sortieForm->isValid() && $sortie->getDateHeureDebut()> $dateDuJour){
+            //$etat = $etatRepository->findOneBy(array('libelle'=>"Créée"));
+            //$sortie->setEtat($etat);
+            //$sortie->setOrganisateur($participant);
+            $em-> persist($sortie);
+
+            $em->flush();
+
+            $this->addFlash('success', 'La sortie a bien été créée');
+            return $this->redirectToRoute('main');
+        }
+
+
+        return $this->render('sortie/modification_sortie.html.twig', [
+            'controller_name' => 'SortieController',
+            'modificationSortieForm' => $sortieForm->createView()
+        ]);
+    }
 }

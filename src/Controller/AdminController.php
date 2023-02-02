@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\ImagesParticipant;
 use App\Entity\Participant;
+use App\filtres\FiltresCampus;
 use App\Form\AdminImportUserCsvType;
 use App\Form\AdminImportUserType;
+use App\Form\FiltreCampusType;
 use App\Repository\CampusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Node\Expr\Array_;
@@ -93,7 +96,7 @@ class AdminController extends AbstractController
             }
 //dd();
             $em->flush();
-
+            $this->addFlash('sucess','profils ajoutés à partir du fichier csv');
 
 //            if (($handle = fopen($file->getData()->getPathname(), "r")) !== false) {
 //
@@ -132,6 +135,7 @@ class AdminController extends AbstractController
         EntityManagerInterface $entityManager,
         Request $request,
         CampusRepository $campusRepository,
+        Campus $campus,
         UserPasswordHasherInterface $passwordHasher
     ): Response
     {
@@ -180,17 +184,7 @@ class AdminController extends AbstractController
 //                $newParticipant->setRoles(array(["ROLE_USER"]));
                 $newParticipant->setRoles($test2);
                 //dump($test);
-                //dump($test2);
-                //dump($monProfil);
-                //dd($nouveauParticipantForm);
-                //$testmdp = $nouveauParticipantForm->get('plainPassword');
-                //$monProfil->setPassword($testmdp);
 
-                //dump($testmdp);
-                //dd($monProfil);
-            //dd($monProfil);
-            //dump($monProfil);
-            //dd($monProfilCopy);
 
                 $entityManager->persist($newParticipant);
 
@@ -203,6 +197,40 @@ class AdminController extends AbstractController
 
         return $this->render('admin/AdminCreerParticipant.tml.twig', [
             'importUserForm' => $nouveauParticipantForm ->createView()
+        ]);
+
+    }
+
+    /**
+     * @Route("/gererCampus", name="gererCampus")
+     */
+    public function gererCampus (
+        EntityManagerInterface $entityManager,
+        Request $request,
+        CampusRepository $campusRepository
+    ): Response
+    {
+        $data = new FiltresCampus();
+        //        $form=$this->createForm(FiltreCampusType::class, $data);
+        //$campus = new Campus();
+
+
+        $form=$this->createForm(FiltreCampusType::class, $data);
+        //dd($data);
+        $form->handleRequest($request);
+
+        //$data = $form->get('nom');
+        //dd($data);
+
+//        $file = $ImportUserCSVForm->get('csv');
+//        $data = $form->get()
+        //$list=$campusRepository->findSearchCampus($data);
+        $list=$campusRepository->findSearchCampus($data);
+
+
+        return $this->render('admin/AdminGererCampus.tml.twig', [
+            'list' => $list,
+            'formCampus'=>$form->createView()
         ]);
 
     }

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MonProfil{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="col2">
+        <h1>Gestion des participants</h1>
+        <h2>Hello {{ app.user.prenom }}, il est possible de créer ou modifier un Campus dans la bdd</h2>
+        {{ form_start(formCampus) }}
+        {{ form_widget(formCampus) }}
+        {#            {{ form_row(importUserForm.pseudo) }}#}
+        <button class="button2">Filtrer la liste des campus</button>
+
+
+        {{ form_end(formCampus) }}
+    </div>
+
+    <div class="colCenter">
+<table class="campus">
+    {#<div class="h46">#}
+    <div >
+        <div>
+            {% for li in list %}
+
+                    <tr>
+                        <td>{{ li.nom }}</td>
+
+
+{#                        <td><a href="{{ path('profil', {'id': li.organisateur.id}) }}">{{ li.organisateur.nom }}</a></td>#}
+{#                        <td><a href="{{ path('sortie_detail', {id: li.id}) }}">afficher</a>#}
+
+{#                            {% if li.etat.libelle == 'Ouverte' and app.user not in li.inscrit %}#}
+{#                                <a href="{{ path('sinscrire', {id: li.id}) }}">S'inscire</a>#}
+{#                            {% endif %}#}
+{#                            {% if app.user in li.inscrit and li.dateLimiteInscription > date() %}#}
+{#                                #}{#                {% if app.user in li.inscrit and li.etat.libelle == 'Ouverte' %}    #}
+{#                                #}{# todo à tester. modifié pour pouvoir se desinscrire d'une sortie cloturée car nbre de participant max atteint  #}
+{#                                <a href="{{ path('seDesister',{id:li.id}) }}">Se Desister</a>#}
+{#                            {% endif %}#}
+
+{#                        </td>#}
+                    </tr>
+
+
+
+
+            {% endfor %}
+        </div>
+
+
+
+
+
+    </div>
+</table>
+ </div>
+{% endblock %}
